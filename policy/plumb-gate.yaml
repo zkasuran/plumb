@@ -1,0 +1,25 @@
+# Plumb gate: judged by Kane against the sealed evidence pack of every check.
+# Blocking rules must pass, nothing may be unevaluated, and every rule must really assert.
+policy: plumb-gate
+gates:
+  - id: blocking-rules-pass
+    metric: totals.failed
+    where: "'blocking' in test.tags"
+    equals: 0
+    severity: blocking
+    message: Every blocking rule must pass.
+  - id: no-broken-rules
+    metric: totals.broken
+    equals: 0
+    severity: blocking
+    message: A rule that could not be evaluated is not a pass.
+  - id: every-rule-asserts
+    metric: metrics.tests_without_checks
+    equals: 0
+    severity: blocking
+    message: A rule with no Verify step always passes. Every rule needs a check.
+  - id: no-healed-rules
+    metric: metrics.heal.healed_tests
+    max: 0
+    severity: warning
+    message: A healed rule means the page moved under a recorded step. Review the heal.

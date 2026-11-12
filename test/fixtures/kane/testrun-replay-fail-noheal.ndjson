@@ -1,0 +1,12 @@
+{"type":"stream_start","cli_version":"0.10.4","surface":"testrun","pid":1587568,"v":1,"ts":"2026-11-12T23:41:08.042Z"}
+{"type":"testrun_plan","members":[{"path":"~/Downloads/hackathon-hq/work/plumb/probe/theme_test.md","test_id":"35488797-4f41-41c7-bfdb-162c7b3fbf3b","tags":["plumb","probe"]}],"valid":true,"parallel":1,"v":1,"ts":"2026-11-12T23:41:08.060Z"}
+{"type":"testrun_start","execution_id":"b49a959b-e975-4bda-9045-673d35ccc201","members":["probe/theme_test.md"],"parallel":1,"override_start_url":"http://127.0.0.1:4173/","v":1,"ts":"2026-11-12T23:41:08.446Z"}
+{"type":"testrun_member_start","path":"~/Downloads/hackathon-hq/work/plumb/probe/theme_test.md","test_id":"35488797-4f41-41c7-bfdb-162c7b3fbf3b","session_id":"cd4b4752-a360-425f-9cc7-7f6e7a8db7d2","log_path":"~/.testmuai/kaneai/sessions/cd4b4752-a360-425f-9cc7-7f6e7a8db7d2/events.ndjson","v":1,"ts":"2026-11-12T23:41:08.446Z"}
+{"type":"testrun_progress","running":["probe/theme_test.md"],"pending":0,"done":0,"total":1,"v":1,"ts":"2026-11-12T23:41:08.446Z"}
+{"type":"testrun_member_end","path":"~/Downloads/hackathon-hq/work/plumb/probe/theme_test.md","test_id":"35488797-4f41-41c7-bfdb-162c7b3fbf3b","status":"failed","duration_s":21,"session_id":"cd4b4752-a360-425f-9cc7-7f6e7a8db7d2","log_path":"~/.testmuai/kaneai/sessions/cd4b4752-a360-425f-9cc7-7f6e7a8db7d2/events.ndjson","failure":{"message":"assertion_failed: @ step 4","step_index":1},"v":1,"ts":"2026-11-12T23:41:41.204Z"}
+{"type":"testrun_progress","running":[],"pending":0,"done":1,"total":1,"v":1,"ts":"2026-11-12T23:41:41.204Z"}
+{"type":"testrun_investigations_wait","count":1,"v":1,"ts":"2026-11-12T23:41:41.204Z"}
+{"type":"testrun_evidence_ingest","status":"ok","evidence_id":"b49a959b-e975-4bda-9045-673d35ccc201","v":1,"ts":"2026-11-12T23:41:43.528Z"}
+{"type":"coverage","status":"skipped","reason":"not_assurance_project","pack":"~/Downloads/hackathon-hq/work/plumb/.testmuai/evidence/b49a959b-e975-4bda-9045-673d35ccc201.evidence","v":1,"ts":"2026-11-12T23:41:43.529Z"}
+{"type":"testrun_summary","execution":{"id":"b49a959b-e975-4bda-9045-673d35ccc201","status":"failed","evidence_id":"b49a959b-e975-4bda-9045-673d35ccc201"},"authored":[],"totals":{"tests":1,"passed":0,"failed":1,"broken":0,"skipped":0,"authored":0},"duration_s":35.088,"upload":"ok","cancelled":false,"v":1,"ts":"2026-11-12T23:41:43.531Z"}
+{"type":"testrun_done","execution_id":"b49a959b-e975-4bda-9045-673d35ccc201","overall_status":"failed","coverage":{"status":"skipped"},"v":1,"ts":"2026-11-12T23:41:43.531Z"}

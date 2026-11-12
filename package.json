@@ -1,0 +1,19 @@
+{
+  "name": "plumb-rules",
+  "version": "0.1.0",
+  "description": "Design rules as code. A real browser (Kane CLI) holds your agent's work to them and sends the failed step back.",
+  "type": "module",
+  "bin": { "plumb": "bin/plumb.mjs" },
+  "engines": { "node": ">=20" },
+  "files": ["bin", "src", "rules", "policy", "hooks"],
+  "scripts": {
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "plumb": "node bin/plumb.mjs"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["kane-cli", "design-system", "agents", "testing", "mcp"],
+  "dependencies": {
+    "picomatch": "^4.0.2",
+    "yaml": "^2.6.0"
+  }
+}
