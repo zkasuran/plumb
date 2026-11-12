@@ -96,9 +96,10 @@ test('screenshots are copied out under stable names', () => {
   const { file, dir } = pack();
   const p = readPack(file);
   const map = extractScreenshots(p, p.tests[0], join(dir, 'shots'), 'pl-theme');
-  assert.equal(map['tests/theme-3f94b1ca/steps/1-0-1/screenshot.jpg'], 'pl-theme-step01.jpg');
-  assert.equal(readFileSync(join(dir, 'shots', 'pl-theme-step01.jpg'), 'utf8'), 'JPEG1');
-  assert.ok(map['tests/theme-3f94b1ca/steps/2-0-2/screenshot.jpg']);
+  // one picture per rule step: the last action of flow 0 is 0-2, so 0-1 is not extracted
+  assert.equal(map['tests/theme-3f94b1ca/steps/1-0-1/screenshot.jpg'], undefined);
+  assert.equal(map['tests/theme-3f94b1ca/steps/2-0-2/screenshot.jpg'], 'pl-theme-s1.jpg');
+  assert.equal(readFileSync(join(dir, 'shots', 'pl-theme-s1.jpg'), 'utf8'), 'JPEG2');
 });
 
 test('a file that is not a zip is rejected', () => {

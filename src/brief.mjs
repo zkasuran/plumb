@@ -5,7 +5,7 @@ import { plural } from './util.mjs';
 const SOURCE_EXT = /\.(html?|css|scss|jsx?|tsx?|vue|svelte|astro|mdx?)$/i;
 
 /** Source files an agent is likely to edit, newest first, so the brief points somewhere. */
-export function candidateFiles(siteDir, ignore = [], limit = 10) {
+export function candidateFiles(siteDir, ignore = [], limit = 10, root = process.cwd()) {
   if (!siteDir) return [];
   const out = [];
   const skip = new Set(ignore);
@@ -31,7 +31,7 @@ export function candidateFiles(siteDir, ignore = [], limit = 10) {
     }
   };
   walk(siteDir, 0);
-  return out.sort((a, b) => b.mtime - a.mtime).slice(0, limit).map((f) => join(relative(process.cwd(), siteDir) || '.', f.path));
+  return out.sort((a, b) => b.mtime - a.mtime).slice(0, limit).map((f) => join(relative(root, siteDir) || '.', f.path));
 }
 
 const order = (a, b) => (a.severity === b.severity ? a.id.localeCompare(b.id) : a.severity === 'blocking' ? -1 : 1);
@@ -53,7 +53,7 @@ export function statusLine(report) {
  * what the browser saw, and Kane's suggested change. It does not ask the agent to edit
  * the rules: the loop rejects a run where protected files changed.
  */
-export function renderBrief(report, { protect = [], siteDir = null, ignore = [] } = {}) {
+export function renderBrief(report, { protect = [], siteDir = null, ignore = [], root = process.cwd() } = {}) {
   const bad = failingRules(report);
   const lines = [];
   if (bad.length === 0) {
@@ -61,20 +61,20 @@ export function renderBrief(report, { protect = [], siteDir = null, ignore = [] 
     return lines.join('\n') + '\n';
   }
   lines.push(
-    `# Plumb: ${plural(bad.length, 'rule')} need work on ${report.site.url}`,
+    `# Plumb: ${bad.length === 1 ? '1 rule needs' : `${bad.length} rules need`} work on ${report.site.url}`,
     '',
     'Plumb opened the site in a real browser (Kane CLI) and ran your design rules. Change the **site source** so these rules pass.',
     '',
     `Do not edit ${protect.map((p) => `\`${p}\``).join(', ') || 'the rules'}. A run where those files changed is rejected. Plumb reruns the rules after you stop, so you do not need to run Kane yourself.`,
     ''
   );
-  const files = candidateFiles(siteDir, ignore);
+  const files = candidateFiles(siteDir, ignore, 10, root);
   if (files.length) lines.push(`Source files most recently touched: ${files.map((f) => `\`${f}\``).join(', ')}`, '');
   for (const r of bad) {
     lines.push(`## ${r.id}: ${r.title}  (${r.severity})`, '', `**Rule.** ${r.statement.replace(/\s+/g, ' ')}`, '');
     const f = r.failure;
     if (f) {
-      const where = f.step ? `Failed at step ${f.step} of ${r.steps.length}${f.stepText ? `: "${f.stepText}"` : ''}.` : 'The run did not finish.';
+      const where = f.step ? `Failed at step ${f.step} of ${r.steps.length}${f.stepText ? `: "${f.stepText.replace(/[.\s]+$/, '')}"` : ''}.` : 'The run did not finish.';
       lines.push(`**What failed.** ${where}`);
       if (f.happened) lines.push(`**What the browser saw.** ${f.happened}`);
       else lines.push(`**Kane said.** ${f.message}`);

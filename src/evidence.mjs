@@ -95,7 +95,8 @@ export function readPack(path) {
       const folder = zip.names.map((n) => n.match(new RegExp(`^tests/${dir}/steps/(\\d+-${s.id})/`))?.[1]).find(Boolean);
       const meta = folder ? JSON.parse(zip.text(`tests/${dir}/steps/${folder}/step.json`) ?? '{}') : {};
       const shot = folder && zip.names.includes(`tests/${dir}/steps/${folder}/screenshot.jpg`) ? `tests/${dir}/steps/${folder}/screenshot.jpg` : null;
-      return { id: s.id, ordinal: s.ordinal, status: s.status, kind: s.kind ?? meta.kind ?? null, durationMs: s.duration_ms ?? null, summary: meta.summary ?? null, url: meta.url ?? null, screenshot: shot };
+      const fm = String(s.id).match(/^(\d+)-(\d+)$/);
+      return { id: s.id, flow: fm ? Number(fm[1]) : null, action: fm ? Number(fm[2]) : null, ordinal: s.ordinal, status: s.status, kind: s.kind ?? meta.kind ?? null, durationMs: s.duration_ms ?? null, summary: meta.summary ?? null, url: meta.url ?? null, screenshot: shot };
     });
     const failures = zip.names
       .filter((n) => n.startsWith(`tests/${dir}/steps/`) && n.endsWith('/failure.yaml'))
@@ -139,26 +140,33 @@ export function consoleFindings(test, ignore = DEFAULT_CONSOLE_IGNORE) {
   return test.console.filter((e) => ['error', 'csp', 'network'].includes(e.kind) && !ignore.some((re) => re.test(`${e.text} ${e.url ?? ''}`)));
 }
 
-/** Copy a pack's screenshots next to the report so the Studio can show them without Kane. */
+/** The last action of each rule step is the best picture of how that step ended. */
+export function lastShotPerFlow(test) {
+  const byFlow = new Map();
+  for (const s of test.steps) {
+    if (s.flow == null || !s.screenshot) continue;
+    const cur = byFlow.get(s.flow);
+    if (!cur || s.action > cur.action) byFlow.set(s.flow, s);
+  }
+  return byFlow;
+}
+
+/**
+ * Copy one screenshot per rule step, plus the failing moment, next to the report so the
+ * Studio can show them without Kane. Returns { pack path -> file name }.
+ */
 export function extractScreenshots(pack, test, outDir, prefix) {
   mkdirSync(outDir, { recursive: true });
   const written = {};
-  for (const s of test.steps) {
-    if (!s.screenshot) continue;
-    const buf = pack.zip.read(s.screenshot);
-    if (!buf) continue;
-    const name = `${prefix}-step${String(s.ordinal).padStart(2, '0')}.jpg`;
+  const save = (path, name) => {
+    if (!path || written[path]) return;
+    const buf = pack.zip.read(path);
+    if (!buf) return;
     writeFileSync(join(outDir, name), buf);
-    written[s.screenshot] = name;
-  }
-  for (const f of test.failures) {
-    if (!f.screenshot || written[f.screenshot]) continue;
-    const buf = pack.zip.read(f.screenshot);
-    if (!buf) continue;
-    const name = `${prefix}-failure.jpg`;
-    writeFileSync(join(outDir, name), buf);
-    written[f.screenshot] = name;
-  }
+    written[path] = name;
+  };
+  for (const [flow, s] of lastShotPerFlow(test)) save(s.screenshot, `${prefix}-s${flow + 1}.jpg`);
+  for (const f of test.failures) save(f.screenshot, `${prefix}-failure.jpg`);
   return written;
 }
 

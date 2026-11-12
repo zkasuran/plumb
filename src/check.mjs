@@ -1,4 +1,5 @@
-import { existsSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { join, resolve, relative } from 'node:path';
 import { PlumbError, newRunId, nowIso, round, plural } from './util.mjs';
 import { loadRulePack } from './rules.mjs';
@@ -10,6 +11,7 @@ import { buildRuleResult, readMember, totalsOf, gateOf, sanitizeReport } from '.
 import { renderBrief } from './brief.mjs';
 import { readState, writeState, saveRun, runDir, pruneRuns } from './store.mjs';
 
+const BUNDLED_POLICY = fileURLToPath(new URL('../policy/plumb-gate.yaml', import.meta.url));
 const MEMBER_END = /^testrun_(authored_)?member_end$/;
 
 /** Decide which rules can reuse their last result. Pure, so the credit saving is testable. */
@@ -115,8 +117,12 @@ export async function runCheck({ root, cfg, flags = {}, onProgress = () => {} })
 
   const executions = [];
   const dir = runDir(root, id);
-  const policyFile = cfg.kane.policy && existsSync(resolve(root, cfg.kane.policy)) ? cfg.kane.policy : null;
+  const policyFile = cfg.kane.policy ? (existsSync(resolve(root, cfg.kane.policy)) ? cfg.kane.policy : existsSync(BUNDLED_POLICY) ? BUNDLED_POLICY : null) : null;
 
+  const plannedIds = fit.map((r) => r.id);
+  if (flags.dryRun) {
+    for (const rule of fit) results.set(rule.id, { ...emptyResult(rule), note: `Dry run: would run, about ${estimateCredits(rule, state, cfg)} credits.` });
+  }
   if (!flags.dryRun) {
     const parallel = flags.parallel ?? cfg.kane.parallel;
     let remaining = [...fit];
@@ -137,6 +143,8 @@ export async function runCheck({ root, cfg, flags = {}, onProgress = () => {} })
         },
       });
       remaining = remaining.filter((r) => !batch.includes(r));
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(join(dir, `kane-${executions.length + 1}.ndjson`), run.events.map((e) => JSON.stringify(e)).join('\n').split(process.env.HOME ?? '\0').join('~') + '\n');
       const exec = collectExecution(run, root);
       executions.push(exec.summary);
       const packTests = exec.packPath && packExists(exec.packPath) ? readPack(exec.packPath) : null;
@@ -176,8 +184,9 @@ export async function runCheck({ root, cfg, flags = {}, onProgress = () => {} })
     rules: ordered,
     totals,
     gate,
+    plan: { reuse: plan.reuse.map((x) => x.rule.id), run: plannedIds, skipped: skipped.map((r) => r.id), estimateCredits: round(fit.reduce((n, r) => n + estimateCredits(r, state, cfg), 0), 0) },
   });
-  const brief = renderBrief(report, { protect: cfg.protect, siteDir: siteDir, ignore: cfg.site.ignore });
+  const brief = renderBrief(report, { protect: cfg.protect, siteDir, ignore: cfg.site.ignore, root });
   if (!flags.dryRun) {
     saveRun(root, report, brief);
     const next = readState(root);

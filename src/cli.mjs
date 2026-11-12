@@ -167,7 +167,13 @@ async function cmdCheck({ flags, root, cfg }) {
     onProgress: progressPrinter({ quiet: !!flags.json }),
   });
   if (flags.json) out(JSON.stringify(report, null, 2));
-  else {
+  else if (report.dryRun) {
+    out(`\n${c.bold('Dry run')} on ${report.site.url}`);
+    out(`  would reuse ${plural(report.plan.reuse.length, 'cached result')}: ${report.plan.reuse.join(', ') || 'none'}`);
+    out(`  would run   ${plural(report.plan.run.length, 'rule')}: ${report.plan.run.join(', ') || 'none'} ${c.dim(`(about ${report.plan.estimateCredits} credits, ${report.credits.before ?? '?'} available)`)}`);
+    if (report.plan.skipped.length) out(`  over budget ${report.plan.skipped.join(', ')}`);
+    return 0;
+  } else {
     out(`\n${renderReport(report)}`);
     if (!report.gate.passed) out(c.dim('\nFix brief: .plumb/brief.md'));
   }

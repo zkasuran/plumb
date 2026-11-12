@@ -1,5 +1,6 @@
 import { round, truncate, homeless } from './util.mjs';
 import { ruleIdFromTestPath } from './compile.mjs';
+import { lastShotPerFlow } from './evidence.mjs';
 
 /**
  * Turn one member's own event log (events.ndjson) into plain data. The log holds the
@@ -90,7 +91,7 @@ export function buildRuleResult({ rule, member, memberEnd, test, shots = {}, con
   const split = splitSummary(kaneFailure?.summary);
   const steps = rule.steps.map((text, i) => {
     const m = member?.steps.find((s) => s.index === i + 1);
-    const ps = test?.steps?.find((s) => s.ordinal === i + 1);
+    const ps = test ? lastShotPerFlow(test).get(i) : null;
     return {
       index: i + 1,
       heading: m?.heading ?? null,

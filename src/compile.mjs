@@ -1,6 +1,5 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
-import { truncate } from './util.mjs';
 
 /** Kane names the output folder after the file stem, so keep stems short and stable. */
 export function testStem(ruleId) {
@@ -12,8 +11,14 @@ export function testFileName(ruleId) {
 }
 
 function headingFor(step, index) {
-  const first = step.split(/(?<=[.!?])\s/)[0].replace(/[`*_#]/g, '').trim();
-  return `${index + 1}. ${truncate(first, 56).replace(/…$/, '')}`;
+  const first = step.split(/(?<=[.!?])\s/)[0].replace(/[`*_#]/g, '').replace(/[.!?]$/, '').trim();
+  let label = first;
+  if (label.length > 48) {
+    label = label.slice(0, 48);
+    const cut = label.lastIndexOf(' ');
+    label = `${label.slice(0, cut > 20 ? cut : 48)}…`;
+  }
+  return `${index + 1}. ${label}`;
 }
 
 /**
