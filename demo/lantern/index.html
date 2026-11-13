@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Borrow the tools you need from neighbours and lend the ones you already own. Lantern makes room for more doing and less buying.">
+  <meta name="theme-color" content="#283e32">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <title>Lantern | Good tools. Great neighbours.</title>
+  <link rel="icon" href="assets/lantern.svg" type="image/svg+xml">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Lantern home"><img src="assets/lantern.svg" alt="" width="31" height="39">lantern</a>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <div class="nav-item"><a class="nav-link" href="index.html" aria-current="page">Home</a></div>
+        <div class="nav-item" data-open="false">
+          <a class="nav-link" href="browse.html">Browse tools</a>
+          <button class="submenu-toggle" type="button" aria-label="Tool categories" aria-haspopup="menu" aria-expanded="false" aria-controls="tools-menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="submenu" id="tools-menu" role="menu" aria-label="Tool categories">
+            <a role="menuitem" href="browse.html?category=DIY">DIY &amp; home repair<small>Make that little fix happen</small></a>
+            <a role="menuitem" href="browse.html?category=Garden">Garden &amp; outdoors<small>A helping hand for your green space</small></a>
+            <a role="menuitem" href="browse.html?category=Cleaning">Cleaning<small>Fresh starts without the big purchase</small></a>
+            <a role="menuitem" href="browse.html?category=Other">A bit of everything<small>Ladders, kits and useful extras</small></a>
+          </div>
+        </div>
+        <div class="nav-item" data-open="false">
+          <a class="nav-link" href="how-it-works.html">How it works</a>
+          <button class="submenu-toggle" type="button" aria-label="How Lantern works" aria-haspopup="menu" aria-expanded="false" aria-controls="about-menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="submenu" id="about-menu" role="menu" aria-label="How Lantern works">
+            <a role="menuitem" href="how-it-works.html#borrowing">Borrow a little<small>Your next project in three steps</small></a>
+            <a role="menuitem" href="how-it-works.html#lending">Lend a little<small>Put your idle tools to good use</small></a>
+            <a role="menuitem" href="how-it-works.html#faq">Good questions<small>The practical things to know</small></a>
+          </div>
+        </div>
+        <a class="button mobile-lend" href="lend.html" hidden>Lend a tool <span aria-hidden="true">↗</span></a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button theme-toggle js-only" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/></svg></button>
+        <a class="button small" href="lend.html">Lend a tool <span aria-hidden="true">↗</span></a>
+        <button class="icon-button mobile-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+  <main id="main">
+    <section class="container hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow">Your neighbourhood, better equipped</div>
+        <h1 id="hero-title">Borrow a tool.<br>Build a little<br><span class="marked">community.</span></h1>
+        <p class="hero-description">The drill for a Saturday project. The ladder for a quick fix. What you need is probably just a few doors away.</p>
+        <div class="hero-actions"><a class="button" href="browse.html">Find your next tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><a class="text-link" href="how-it-works.html">How it works <span aria-hidden="true">↗</span></a></div>
+        <div class="neighbour-note"><div class="avatars" aria-hidden="true"><span class="avatar">J</span><span class="avatar">M</span><span class="avatar">S</span></div><p><strong>A little less buying. A little more sharing.</strong><br>That's the neighbourly way.</p></div>
+      </div>
+      <figure class="hero-visual">
+        <img class="workshop-image" src="assets/workshop.svg" alt="A well-loved neighbourhood workbench with a drill, hammer, saw and garden plant" width="640" height="570" fetchpriority="high">
+        <div class="round-stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 21C6 17 3 13 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 4-3 8-9 12Z"/></svg>Good tools.<br>Great neighbours.</div>
+        <div class="floating-note"><div class="note-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14m-4-4 4 4-4 4M5 6h6M5 18h6"/></svg></div><div><strong>Your next project starts here.</strong><p>Borrow it. Make it. Pass it on.</p></div></div>
+        <figcaption class="visual-caption">Big possibilities. Small borrowing footprint.</figcaption>
+      </figure>
+    </section>
+    <section class="benefits-bar" aria-label="The good in sharing"><div class="container benefits-inner">
+      <div class="benefit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 7h16v14H4ZM8 7V4h8v3M4 12h16m-10-2v4h4v-4"/></svg><div><strong>More doing. Less buying.</strong><p>The right tool, without owning it.</p></div></div>
+      <div class="benefit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M20 4C9 2 3 8 6 15s13 3 14-11ZM4 21 16 9m-6 6v-5m3 2h4"/></svg><div><strong>Lighter on the planet.</strong><p>Give good tools a longer story.</p></div></div>
+      <div class="benefit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m3 11 9-8 9 8M5 9v12h14V9M9 21v-7h6v7"/></svg><div><strong>Closer to your neighbours.</strong><p>A shared tool. A new connection.</p></div></div>
+    </div></section>
+    <section class="container section" aria-labelledby="tools-title">
+      <div class="section-header"><div><div class="eyebrow">A few neighbourhood favourites</div><h2 id="tools-title">Small projects start here.</h2><p>Useful things, ready for their next chapter.</p></div><a class="text-link" href="browse.html">Browse all tools <span aria-hidden="true">↗</span></a></div>
+      <div class="tool-grid">
+        <article class="tool-card"><a class="tool-image" href="browse.html?tool=drill" aria-label="View cordless drill"><img src="assets/drill.svg" alt="Amber and green cordless drill" width="400" height="280" loading="lazy"><span class="availability">Available to borrow</span></a><div class="tool-body"><p class="tool-category">DIY &amp; home repair</p><h3 class="tool-title"><a href="browse.html?tool=drill">Cordless drill</a></h3><p class="tool-description">For shelves, flatpacks and fresh ideas.</p><div class="tool-owner"><span class="owner-name"><span class="owner-dot" aria-hidden="true">J</span>Jamie · Maple Lane</span><span>Free to borrow</span></div></div></article>
+        <article class="tool-card"><a class="tool-image" href="browse.html?tool=garden" aria-label="View garden hand tools"><img src="assets/garden.svg" alt="Garden spade and fork with wooden handles" width="400" height="280" loading="lazy"><span class="availability">Available to borrow</span></a><div class="tool-body"><p class="tool-category">Garden &amp; outdoors</p><h3 class="tool-title"><a href="browse.html?tool=garden">Garden hand tools</a></h3><p class="tool-description">A little help for your green space.</p><div class="tool-owner"><span class="owner-name"><span class="owner-dot" aria-hidden="true">S</span>Sam · Oak Street</span><span>Free to borrow</span></div></div></article>
+        <article class="tool-card"><a class="tool-image" href="browse.html?tool=washer" aria-label="View pressure washer"><img src="assets/washer.svg" alt="Amber pressure washer with hose and spray lance" width="400" height="280" loading="lazy"><span class="availability">Available to borrow</span></a><div class="tool-body"><p class="tool-category">Cleaning</p><h3 class="tool-title"><a href="browse.html?tool=washer">Pressure washer</a></h3><p class="tool-description">Give the patio a fresh start.</p><div class="tool-owner"><span class="owner-name"><span class="owner-dot" aria-hidden="true">M</span>Morgan · Birch Road</span><span>Free to borrow</span></div></div></article>
+        <article class="tool-card"><a class="tool-image" href="browse.html?tool=sander" aria-label="View orbital sander"><img src="assets/sander.svg" alt="Green orbital sander with dust collector" width="400" height="280" loading="lazy"><span class="availability">Available to borrow</span></a><div class="tool-body"><p class="tool-category">DIY &amp; home repair</p><h3 class="tool-title"><a href="browse.html?tool=sander">Orbital sander</a></h3><p class="tool-description">Old furniture, new possibilities.</p><div class="tool-owner"><span class="owner-name"><span class="owner-dot" aria-hidden="true">A</span>Alex · Maple Lane</span><span>Free to borrow</span></div></div></article>
+      </div>
+      <p class="collection-note">A little look at a sample Lantern neighbourhood.</p>
+    </section>
+    <section class="container section" aria-labelledby="category-title">
+      <div class="section-header"><div><h2 id="category-title">What have you got in mind?</h2></div></div>
+      <div class="category-row">
+        <a class="category-link" href="browse.html?category=DIY"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m4 20 9-9m-6-7 5 5 3-3-5-5M13 9l8 8-4 4-8-8"/></svg><span>DIY &amp; home repair</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
+        <a class="category-link" href="browse.html?category=Garden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M20 4C9 2 3 8 6 15s13 3 14-11ZM4 21 16 9"/></svg><span>Garden &amp; outdoors</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
+        <a class="category-link" href="browse.html?category=Cleaning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m14 4 6-2-2 6M6 10l8 8m-9-7-3 8 3 3 8-3 3-3-8-8ZM8 16l-4 5m8-1-4 2M8 8l9-9"/></svg><span>Cleaning</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
+        <a class="category-link" href="browse.html?category=Other"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 7h16v14H4ZM8 7V4h8v3M4 12h16m-10-2v4h4v-4"/></svg><span>A bit of everything</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
+      </div>
+    </section>
+    <section class="steps-section section" aria-labelledby="steps-title"><div class="container">
+      <div class="section-header"><div><div class="eyebrow">Simple by nature</div><h2 id="steps-title">Borrow. Make. Bring it back.</h2></div><a class="text-link" href="how-it-works.html">The neighbourly details <span aria-hidden="true">↗</span></a></div>
+      <div class="steps-grid">
+        <div class="step"><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="step-number">01 / FIND IT</div><h3>A tool for your to-do.</h3><p>Find just the thing for the project you've been meaning to start.</p></div>
+        <div class="step"><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 5h18v13H9l-6 4ZM7 9h10M7 13h7"/></svg></div><div class="step-number">02 / SAY HELLO</div><h3>A neighbour, not a checkout.</h3><p>Agree on a pickup time and get a quick introduction to the tool.</p></div>
+        <div class="step"><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6m-1 3 3 3 5-6"/></svg></div><div class="step-number">03 / PASS IT ON</div><h3>Job done. Good feeling.</h3><p>Return it clean and on time, ready for someone else's next idea.</p></div>
+      </div>
+    </div></section>
+    <section class="container section" aria-labelledby="lend-title"><div class="community-banner">
+      <div><div class="eyebrow">Your shed has something to share</div><h2 id="lend-title">A good tool deserves<br>more than a dusty shelf.</h2><p>Got something useful sitting idle? Make a little room in your shed and a big difference to a neighbour.</p><a class="button amber" href="lend.html">Lend your first tool <span aria-hidden="true">↗</span></a></div>
+      <div class="banner-art" aria-hidden="true"><img src="assets/toolkit.svg" alt="" width="400" height="280" loading="lazy"><span>Good things are better shared.</span></div>
+    </div></section>
+  </main>
+  <footer class="site-footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a class="brand" href="index.html"><img src="assets/lantern.svg" alt="" width="25" height="32">lantern</a><p>Good tools. Great neighbours. A little more community.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="browse.html">Browse tools</a><a href="how-it-works.html">How it works</a><a href="lend.html">Lend a tool</a><a href="how-it-works.html#faq">FAQs</a></nav></div><div class="footer-bottom"><span>© 2026 Lantern. Made for the neighbourhood.</span><span>A little sharing goes a long way. <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21C6 17 3 13 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 4-3 8-9 12Z"/></svg></span></div></div></footer>
+</body>
+</html>
