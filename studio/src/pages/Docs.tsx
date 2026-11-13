@@ -33,7 +33,7 @@ export const DOCS: Doc[] = [
       <>
         <p>You need Node 20 or newer, Chrome, and a Kane CLI account. Kane CLI gives every signup 10,000 free credits.</p>
         <h2 id="install">1. Install</h2>
-        <CodeBlock code={`npm install -g @testmuai/kane-cli\nkane-cli login --oauth\n\ngit clone <this repository> plumb && cd plumb\nnpm install && npm link        # puts "plumb" on your PATH`} />
+        <CodeBlock code={`npm install -g @testmuai/kane-cli\nkane-cli login --oauth\n\ngit clone https://github.com/zkasuran/plumb && cd plumb\nnpm install && npm link        # puts "plumb" on your PATH`} />
         <h2 id="init">2. Set up your project</h2>
         <p>Run this in the project that holds your site. Point it at the address your site runs on and, if you can, at its source folder. Plumb uses the folder to skip rules whose page did not change.</p>
         <CodeBlock code={`plumb init --url http://localhost:3000 --site-dir . --hooks kiro,claude\nplumb doctor`} />

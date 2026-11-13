@@ -33,7 +33,7 @@ AI coding agents ship pages fast, and they keep breaking the same unwritten rule
 You need Node 20 or newer, Chrome and a Kane CLI account (`npm install -g @testmuai/kane-cli`, then `kane-cli login --oauth`).
 
 ```bash
-git clone <this repository> plumb && cd plumb && npm install && npm link
+git clone https://github.com/zkasuran/plumb && cd plumb && npm install && npm link
 
 cd your-project
 plumb init --url http://localhost:3000 --site-dir . --hooks kiro,claude
