@@ -4,7 +4,7 @@
 
 Write your design rules in plain English. Plumb turns each one into a [Kane CLI](https://www.testmuai.com/kane-cli/) flow, runs it against your site in real Chrome, and hands the step that failed back to your coding agent to fix. Then it checks again.
 
-Built for the Kane CLI Online Hackathon (12 to 19 November 2026). **Live Studio with the recorded runs: https://zkasuran.github.io/plumb/**
+Built for the Kane CLI Online Hackathon (12 to 19 November 2026). **Live Studio with the recorded runs: https://zkasuran.github.io/plumb/** · **Demo video: https://youtu.be/QedFd0MLALk**
 
 ```text
 rules/*.md  ->  tests/plumb/*_test.md  ->  kane-cli testrun  ->  report + fix brief  ->  agent  ->  check again
