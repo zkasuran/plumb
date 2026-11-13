@@ -9,3 +9,6 @@ dist/
 .DS_Store
 probe/
 fixtures/probe/
+studio/node_modules/
+studio/dist/
+studio/public/data/

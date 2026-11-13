@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plumb: design rules held by a real browser</title>
+    <meta name="description" content="Write your design rules once. A real browser checks every page your agent builds and sends the failed step back to be fixed." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Plumb Studio needs JavaScript to show runs and rules.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
