@@ -66,3 +66,32 @@ test('a foreign Host or Origin is refused, and POST needs the custom header', as
   assert.equal(ok.headers['access-control-allow-origin'], 'http://127.0.0.1:5173');
   assert.equal((await raw('/api/check', { method: 'POST' })).status, 403);
 });
+
+test('static Studio: assets, SPA fallback for client routes, 404 status for unknown ones, no traversal', async () => {
+  const dir = tmp();
+  const dist = join(dir, 'dist');
+  mkdirSync(join(dist, 'assets'), { recursive: true });
+  writeFileSync(join(dist, 'index.html'), '<!doctype html><title>studio</title>');
+  writeFileSync(join(dist, 'assets', 'a.js'), 'x');
+  writeFileSync(join(dir, 'secret.txt'), 'nope');
+  const dataDir = join(dir, 'data');
+  mkdirSync(dataDir);
+  writeFileSync(join(dataDir, 'index.json'), '{"v":1}');
+  const { cfg } = loadConfig({ cwd: root });
+  const s2 = await serveStudioApi({ root, cfg, port: 4392, staticDir: dist, dataDir });
+  const get = (path) => new Promise((resolve, reject) => http.get({ host: '127.0.0.1', port: 4392, path }, (res) => { let b = ''; res.on('data', (d) => (b += d)); res.on('end', () => resolve({ status: res.statusCode, body: b, headers: res.headers })); }).on('error', reject));
+  try {
+    assert.equal((await get('/')).status, 200);
+    assert.match((await get('/studio/runs/x')).body, /studio/);
+    const missing = await get('/plumb-missing-page-404');
+    assert.equal(missing.status, 404);
+    assert.match(missing.body, /studio/);
+    assert.equal((await get('/assets/a.js')).headers['content-type'], 'text/javascript; charset=utf-8');
+    assert.equal((await get('/assets/none.js')).status, 404);
+    assert.equal((await get('/data/index.json')).body, '{"v":1}');
+    assert.notEqual((await get('/..%2Fsecret.txt')).body, 'nope');
+    assert.equal((await get('/')).headers['x-content-type-options'], 'nosniff');
+  } finally {
+    s2.close();
+  }
+});

@@ -56,3 +56,11 @@ test('diffReports names fixed, regressed and still failing rules', () => {
   const d = diffReports(rep({ A: 'fail', B: 'pass', C: 'fail', D: 'pass' }), rep({ A: 'pass', B: 'fail', C: 'fail', D: 'pass' }));
   assert.deepEqual(d, { fixed: ['A'], regressed: ['B'], stillFailing: ['C'], stillPassing: ['D'] });
 });
+
+import { agentCommand } from '../src/agents.mjs';
+test('agent commands take an optional model and keep the prompt as one argument', () => {
+  const o = agentCommand('opencode', { prompt: 'fix it', cwd: '/x', model: 'prov/model' });
+  assert.deepEqual(o, { bin: 'opencode', args: ['run', '-m', 'prov/model', 'fix it'] });
+  assert.deepEqual(agentCommand('opencode', { prompt: 'p', cwd: '/x', model: null }).args, ['run', 'p']);
+  assert.throws(() => agentCommand('cmd', { prompt: 'p', cwd: '/x' }), /agent.cmd/);
+});

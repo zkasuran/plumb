@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, extname, normalize, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { listRuns, loadRun, latestRun, runDir, plumbDir } from './store.mjs';
 import { listLoops, rulesForStudio } from './export.mjs';
@@ -9,6 +10,10 @@ import { runLoop } from './loop.mjs';
 import { kaneStatus } from './kane.mjs';
 import { readJson } from './util.mjs';
 
+const STUDIO_DIST = fileURLToPath(new URL('../studio/dist', import.meta.url));
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.md': 'text/markdown; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.ico': 'image/x-icon' };
+const CLIENT_ROUTES = /^\/(studio|rules|docs|reports)(\/|$)/;
+const SECURITY = { 'x-content-type-options': 'nosniff', 'referrer-policy': 'no-referrer', 'x-frame-options': 'DENY', 'permissions-policy': 'camera=(), microphone=(), geolocation=()' };
 const ID_RE = /^[0-9A-Za-z_-]{6,64}$/;
 const SHOT_RE = /^[\w.-]+\.jpg$/;
 const MAX_BODY = 8 * 1024;
@@ -18,7 +23,8 @@ const MAX_BODY = 8 * 1024;
  * and requires a custom header on every POST so a web page cannot trigger a check by
  * submitting a form. Reads are limited to .plumb.
  */
-export async function serveStudioApi({ root, cfg, port = 4310, host = '127.0.0.1', allowOrigins = [] }) {
+export { STUDIO_DIST };
+export async function serveStudioApi({ root, cfg, port = 4310, host = '127.0.0.1', allowOrigins = [], staticDir = null, dataDir = null }) {
   const origins = new Set([`http://127.0.0.1:${port}`, `http://localhost:${port}`, 'http://127.0.0.1:5173', 'http://localhost:5173', ...allowOrigins]);
   const jobs = new Map();
   let running = null;
@@ -58,6 +64,33 @@ export async function serveStudioApi({ root, cfg, port = 4310, host = '127.0.0.1
     return job;
   }
 
+  // Static Studio: the built app, recorded data from dataDir when given, SPA fallback for client routes.
+  function sendStatic(_req, res, p) {
+    let rel = normalize(decodeURIComponent(p)).replace(/^[/\\]+/, '');
+    if (rel.includes('..')) return json(res, 400, { error: 'bad path' });
+    let base = staticDir;
+    if (dataDir && (rel === 'data' || rel.startsWith(`data${sep}`))) {
+      base = dataDir;
+      rel = rel.replace(/^data[/\\]?/, '');
+    }
+    let file = join(base, rel);
+    const inside = file === base || file.startsWith(base + sep);
+    const isFile = inside && existsSync(file) && statSync(file).isFile();
+    if (!isFile) {
+      if (extname(rel)) {
+        res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8', ...SECURITY });
+        return res.end('Not found');
+      }
+      file = join(staticDir, 'index.html');
+      if (!existsSync(file)) return json(res, 503, { error: 'Studio is not built. Run: npm run build in studio/' });
+      const known = p === '/' || CLIENT_ROUTES.test(p);
+      res.writeHead(known ? 200 : 404, { 'content-type': MIME['.html'], 'cache-control': 'no-store', ...SECURITY });
+      return res.end(readFileSync(file));
+    }
+    res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream', 'cache-control': /\/assets\//.test(p) ? 'public, max-age=31536000, immutable' : 'no-store', ...SECURITY });
+    createReadStream(file).pipe(res);
+  }
+
   const server = createServer(async (req, res) => {
     try {
       const url = new URL(req.url, `http://${host}:${port}`);
@@ -69,6 +102,7 @@ export async function serveStudioApi({ root, cfg, port = 4310, host = '127.0.0.1
       if (origin && !origins.has(origin)) return json(res, 403, { error: 'origin not allowed' });
 
       const p = url.pathname;
+      if (req.method === 'GET' && staticDir && !p.startsWith('/api/')) return sendStatic(req, res, p);
       if (req.method === 'GET') {
         if (p === '/api/health') {
           if (Date.now() - kaneCache.at > 30_000) kaneCache = { at: Date.now(), value: await kaneStatus() };

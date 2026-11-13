@@ -59,7 +59,8 @@ ${c.bold('Integrations')}
   plumb gate                                        for hooks: exit 2 plus the brief when blocked
   plumb mcp                                         MCP server (plumb_check, plumb_brief, ...)
   plumb hook install kiro|claude|agents
-  plumb serve [--port 4310]                         Studio API for the web app
+  plumb studio [--port 4310] [--data DIR]           the Studio web app plus its API, one origin
+  plumb serve [--port 4310]                         Studio API only (for npm run dev in studio/)
   plumb export --out DIR                            write Studio data (runs, loops, rules)
 
 Exit codes: 0 gate passed, 1 gate blocked, 2 could not run.
@@ -332,6 +333,15 @@ export async function main(argv) {
       case 'serve': {
         const { serveStudioApi } = await import('./serve.mjs');
         await serveStudioApi({ root, cfg, port: flags.port ? Number(flags.port) : 4310 });
+        return await new Promise(() => {});
+      }
+      case 'studio': {
+        const { serveStudioApi, STUDIO_DIST } = await import('./serve.mjs');
+        const dist = typeof flags.dist === 'string' ? resolve(flags.dist) : STUDIO_DIST;
+        const data = typeof flags.data === 'string' ? resolve(flags.data) : null;
+        const num = flags.port ? Number(flags.port) : 4310;
+        await serveStudioApi({ root, cfg, port: num, staticDir: dist, dataDir: data });
+        out(`${sym.pass} Studio at http://127.0.0.1:${num}  ${c.dim(data ? 'recorded data' : 'live data from .plumb')}`);
         return await new Promise(() => {});
       }
       case 'export': {

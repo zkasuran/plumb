@@ -60,7 +60,7 @@ export async function runLoop({ root, cfg, flags = {}, onProgress = () => {} }) 
     const briefPath = '.plumb/brief.md';
     const prompt = buildPrompt({ report, briefPath, siteDir: cfg.site.dir, protect: cfg.protect, previous: previousAttempt ? { tampered: previousAttempt.tampered, stillFailing: failingIds(report) } : null });
     onProgress({ type: 'agent_start', agent: agentName, iteration: i + 1 });
-    const result = await runAgent(agentName, { prompt, cwd: root, cmd: cfg.agent.cmd, timeoutS: cfg.agent.timeoutS, env: { PLUMB_BRIEF: join(root, briefPath), PLUMB_RUN: report.id }, onOutput: (t) => onProgress({ type: 'agent_output', text: t }) });
+    const result = await runAgent(agentName, { prompt, cwd: root, cmd: cfg.agent.cmd, model: cfg.agent.model ?? null, timeoutS: cfg.agent.timeoutS, env: { PLUMB_BRIEF: join(root, briefPath), PLUMB_RUN: report.id }, onOutput: (t) => onProgress({ type: 'agent_output', text: t }) });
     if (result.missing) throw new PlumbError(`${agentName} is not installed on this machine.`, { code: 'AGENT_MISSING', hint: `Pick another agent with --agent (${['claude', 'codex', 'kiro', 'opencode'].join(', ')}) or set agent.cmd.` });
 
     const protectedAfter = snapshotProtected(root, cfg.protect);

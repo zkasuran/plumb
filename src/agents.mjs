@@ -6,16 +6,17 @@ export const AGENT_NAMES = ['claude', 'codex', 'kiro', 'opencode', 'cmd'];
  * How to run each coding agent headless with one prompt. The agent edits files in `cwd`.
  * Permissions are limited to reading and editing files where the CLI allows it.
  */
-export function agentCommand(name, { prompt, cwd, cmd = null }) {
+export function agentCommand(name, { prompt, cwd, cmd = null, model = process.env.PLUMB_AGENT_MODEL || null }) {
+  const m = (flag) => (model ? [flag, model] : []);
   switch (name) {
     case 'claude':
-      return { bin: 'claude', args: ['-p', prompt, '--permission-mode', 'acceptEdits', '--allowedTools', 'Read,Edit,Write,Glob,Grep'] };
+      return { bin: 'claude', args: ['-p', prompt, ...m('--model'), '--permission-mode', 'acceptEdits', '--allowedTools', 'Read,Edit,Write,Glob,Grep'] };
     case 'codex':
-      return { bin: 'codex', args: ['exec', '-s', 'workspace-write', '-C', cwd, prompt] };
+      return { bin: 'codex', args: ['exec', ...m('-m'), '-s', 'workspace-write', '-C', cwd, prompt] };
     case 'kiro':
-      return { bin: 'kiro-cli', args: ['chat', '--no-interactive', '--trust-tools=fs_read,fs_write', prompt] };
+      return { bin: 'kiro-cli', args: ['chat', '--no-interactive', ...m('--model'), '--trust-tools=fs_read,fs_write', prompt] };
     case 'opencode':
-      return { bin: 'opencode', args: ['run', prompt] };
+      return { bin: 'opencode', args: ['run', ...m('-m'), prompt] };
     case 'cmd': {
       if (!cmd) throw new Error('agent "cmd" needs agent.cmd in plumb.config.json, for example "my-agent --prompt-file $PLUMB_BRIEF"');
       return { bin: '/bin/sh', args: ['-c', cmd] };
@@ -43,8 +44,8 @@ export function buildPrompt({ report, briefPath, siteDir, protect, previous = nu
 }
 
 /** Run an agent to completion. Output is captured for the loop record, never trusted as data. */
-export function runAgent(name, { prompt, cwd, cmd = null, timeoutS = 900, env = {}, onOutput }) {
-  const { bin, args } = agentCommand(name, { prompt, cwd, cmd });
+export function runAgent(name, { prompt, cwd, cmd = null, model = null, timeoutS = 900, env = {}, onOutput }) {
+  const { bin, args } = agentCommand(name, { prompt, cwd, cmd, ...(model ? { model } : {}) });
   return new Promise((resolve) => {
     const t0 = Date.now();
     const child = spawn(bin, args, { cwd, env: { ...process.env, PLUMB_PROMPT: prompt, ...env }, stdio: ['ignore', 'pipe', 'pipe'] });
