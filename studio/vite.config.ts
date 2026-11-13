@@ -51,6 +51,7 @@ function hardening(): Plugin {
 }
 
 export default defineConfig({
+  base: process.env.VITE_BASE ?? '/',
   plugins: [react(), hardening()],
   server: { port: 5173, proxy: { '/api': 'http://127.0.0.1:4310' } },
   build: { outDir: 'dist', sourcemap: false, target: 'es2022' },

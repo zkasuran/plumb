@@ -13,6 +13,9 @@ const API = (() => {
   return '';
 })();
 
+const BASE = import.meta.env.BASE_URL;
+/** Static hosting has no API, so do not probe for one (the 404 would show up as a console error). */
+const STATIC_ONLY = import.meta.env.VITE_STATIC === '1';
 const ID_RE = /^[0-9A-Za-z_-]{6,64}$/;
 const FILE_RE = /^[\w.-]+\.jpg$/;
 const TIMEOUT_MS = 6000;
@@ -73,12 +76,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
     (async () => {
       let health: Health | null = null;
       try {
-        health = await fetchJson(`${API}/api/health`, isHealth, 1500);
+        health = STATIC_ONLY ? null : await fetchJson(`${API}${BASE}api/health`, isHealth, 1500);
       } catch {
         health = null;
       }
       try {
-        const index = health ? await fetchJson(`${API}/api/index`, isIndex) : await fetchJson('/data/index.json', isIndex);
+        const index = health ? await fetchJson(`${API}${BASE}api/index`, isIndex) : await fetchJson(`${BASE}data/index.json`, isIndex);
         live.current = !!health;
         cache.current.clear();
         if (!dead) setState({ status: 'ready', index, live: !!health, health });
@@ -106,16 +109,16 @@ export function DataProvider({ children }: { children: ReactNode }) {
       reload: () => setTick((n) => n + 1),
       getRun: (id) => {
         if (!ID_RE.test(id)) return Promise.reject(new Error('Not a valid run id'));
-        return memo(`run:${id}`, () => fetchJson(live.current ? `${API}/api/runs/${id}` : `/data/runs/${id}.json`, isReport));
+        return memo(`run:${id}`, () => fetchJson(live.current ? `${API}${BASE}api/runs/${id}` : `${BASE}data/runs/${id}.json`, isReport));
       },
       getLoop: (id) => {
         if (!ID_RE.test(id)) return Promise.reject(new Error('Not a valid loop id'));
-        return memo(`loop:${id}`, () => fetchJson(live.current ? `${API}/api/loops/${id}` : `/data/loops/${id}.json`, isLoop));
+        return memo(`loop:${id}`, () => fetchJson(live.current ? `${API}${BASE}api/loops/${id}` : `${BASE}data/loops/${id}.json`, isLoop));
       },
       getBrief: (id) => {
         if (!ID_RE.test(id)) return Promise.reject(new Error('Not a valid run id'));
         return memo(`brief:${id}`, async () => {
-          const res = await fetch(live.current ? `${API}/api/runs/${id}/brief` : `/data/runs/${id}/brief.md`);
+          const res = await fetch(live.current ? `${API}${BASE}api/runs/${id}/brief` : `${BASE}data/runs/${id}/brief.md`);
           if (!res.ok) throw new Error('No brief for this run');
           const t = await res.text();
           if (t.length > 200_000) throw new Error('Brief too large');
@@ -124,17 +127,17 @@ export function DataProvider({ children }: { children: ReactNode }) {
       },
       shotUrl: (runId, file) => {
         if (!file || !ID_RE.test(runId) || !FILE_RE.test(file)) return null;
-        return live.current ? `${API}/api/runs/${runId}/shots/${file}` : `/data/runs/${runId}/shots/${file}`;
+        return live.current ? `${API}${BASE}api/runs/${runId}/shots/${file}` : `${BASE}data/runs/${runId}/shots/${file}`;
       },
       startJob: async (kind, body) => {
-        const res = await fetch(`${API}/api/${kind}`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-plumb': '1' }, body: JSON.stringify(body) });
+        const res = await fetch(`${API}${BASE}api/${kind}`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-plumb': '1' }, body: JSON.stringify(body) });
         const j = (await res.json()) as { jobId?: string; error?: string };
         if (!res.ok || !j.jobId) throw new Error(j.error ?? `Could not start (${res.status})`);
         return j.jobId;
       },
       jobEvents: (jobId, onEvent) => {
         if (!/^[0-9a-f-]{6,40}$/.test(jobId)) return () => {};
-        const es = new EventSource(`${API}/api/jobs/${jobId}/events`);
+        const es = new EventSource(`${API}${BASE}api/jobs/${jobId}/events`);
         es.onmessage = (m) => {
           try {
             const v: unknown = JSON.parse(m.data);

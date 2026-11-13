@@ -8,6 +8,7 @@ export default function NotFound() {
   }, []);
   return (
     <div className="wrap section">
+      <h1 className="sr-only">Page not found</h1>
       <EmptyState
         title="That page was not found"
         action={
