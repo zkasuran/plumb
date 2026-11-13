@@ -8,7 +8,8 @@
   "files": ["bin", "src", "rules", "policy", "hooks"],
   "scripts": {
     "test": "node --test \"test/**/*.test.mjs\"",
-    "plumb": "node bin/plumb.mjs"
+    "plumb": "node bin/plumb.mjs",
+    "demo": "bash scripts/demo.sh"
   },
   "license": "Apache-2.0",
   "keywords": ["kane-cli", "design-system", "agents", "testing", "mcp"],
