@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Plumb">
+  <rect width="32" height="32" rx="8" fill="#2459f5"/>
+  <path d="M16 4v11" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M16 15l5.2 5.4L16 28l-5.2-7.6z" fill="#fff"/>
+</svg>

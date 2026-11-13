@@ -1,0 +1,110 @@
+{
+  "v": 1,
+  "id": "20261113T024105Z-e728",
+  "startedAt": "2026-11-13T02:41:05.409Z",
+  "endedAt": "2026-11-13T02:43:28.924Z",
+  "durationS": 143.5,
+  "mode": "check",
+  "iteration": null,
+  "dryRun": false,
+  "site": {
+    "url": "http://127.0.0.1:4310/",
+    "kind": "dir",
+    "fingerprint": "7455b3993328ef92",
+    "files": 89
+  },
+  "kane": {
+    "version": "0.10.4",
+    "executions": [
+      {
+        "id": "e3615e5b-d2c6-4cb3-ba1a-9c980dd62059",
+        "exit": 0,
+        "status": "passed",
+        "totals": {
+          "tests": 1,
+          "passed": 1,
+          "failed": 0,
+          "broken": 0,
+          "skipped": 0,
+          "authored": 0
+        },
+        "durationS": 136.494,
+        "verdict": {
+          "result": "pass",
+          "failedGates": []
+        }
+      }
+    ]
+  },
+  "credits": {
+    "before": 308.8057,
+    "after": 259.1107,
+    "used": 49.7,
+    "floor": 60
+  },
+  "rules": [
+    {
+      "id": "PL-CONSISTENT",
+      "title": "Every page uses the same navigation and footer",
+      "severity": "blocking",
+      "sha": "030a48eeab59",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 119,
+      "credits": 32.6,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Open the home page",
+          "text": "Open the home page. Store the navigation labels as 'home_nav' and the footer text as 'home_footer'. Use the navigation to open two other pages of the site.",
+          "status": "pass",
+          "durationS": 91.5,
+          "screenshot": "pl-consistent-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Verify on each of those pages that the…",
+          "text": "Verify on each of those pages that the navigation shows the same labels as the stored home_nav and that the footer text matches the stored home_footer.",
+          "status": "pass",
+          "durationS": 24.9,
+          "screenshot": "pl-consistent-s2.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "e46928b9-f0fb-4c9d-8411-6b101f07b21d",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C266XGYPG10Y3Z0GFFHEN/dashboard/share/US_TA5LE3Y8I3F2AJ573FXKTDH988SX1LX8DIFC5N3P9RAK3Q09Z0QQX5U0EKWCZGDA?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Render the navigation and footer from one shared component or template. Remove page-specific headers and old stylesheets.",
+      "statement": "All pages share one design system. The navigation labels and the footer on the home page appear unchanged on the other pages."
+    }
+  ],
+  "totals": {
+    "rules": 1,
+    "pass": 1,
+    "fail": 0,
+    "broken": 0,
+    "skipped": 0,
+    "cached": 0,
+    "blockingFail": 0,
+    "advisoryFail": 0,
+    "replay": 0,
+    "author": 1,
+    "healed": 0
+  },
+  "gate": {
+    "passed": true,
+    "blocking": []
+  },
+  "plan": {
+    "reuse": [],
+    "run": [
+      "PL-CONSISTENT"
+    ],
+    "skipped": [],
+    "estimateCredits": 50
+  }
+}

@@ -1,0 +1,442 @@
+{
+  "v": 1,
+  "id": "20261113T023348Z-01bc",
+  "startedAt": "2026-11-13T02:33:48.410Z",
+  "endedAt": "2026-11-13T02:40:09.048Z",
+  "durationS": 380.6,
+  "mode": "check",
+  "iteration": null,
+  "dryRun": false,
+  "site": {
+    "url": "http://127.0.0.1:4310/",
+    "kind": "dir",
+    "fingerprint": "7455b3993328ef92",
+    "files": 89
+  },
+  "kane": {
+    "version": "0.10.4",
+    "executions": [
+      {
+        "id": "dc1e2e65-281b-401d-b2ea-e54f71734d69",
+        "exit": 1,
+        "status": "failed",
+        "totals": {
+          "tests": 3,
+          "passed": 2,
+          "failed": 1,
+          "broken": 0,
+          "skipped": 0,
+          "authored": 3
+        },
+        "durationS": 146.123,
+        "verdict": {
+          "result": "fail",
+          "failedGates": [
+            "blocking-rules-pass",
+            "every-rule-asserts"
+          ]
+        }
+      },
+      {
+        "id": "273b890d-1418-44f1-94ec-aa62e76a3b39",
+        "exit": 0,
+        "status": "passed",
+        "totals": {
+          "tests": 3,
+          "passed": 3,
+          "failed": 0,
+          "broken": 0,
+          "skipped": 0,
+          "authored": 3
+        },
+        "durationS": 114.305,
+        "verdict": {
+          "result": "pass",
+          "failedGates": []
+        }
+      },
+      {
+        "id": "23323f3c-9a84-46e0-8f0f-cbb1e6eebd78",
+        "exit": 0,
+        "status": "passed",
+        "totals": {
+          "tests": 2,
+          "passed": 2,
+          "failed": 0,
+          "broken": 0,
+          "skipped": 0,
+          "authored": 2
+        },
+        "durationS": 102.481,
+        "verdict": {
+          "result": "pass",
+          "failedGates": []
+        }
+      }
+    ]
+  },
+  "credits": {
+    "before": 575.3233,
+    "after": 308.8057,
+    "used": 266.5,
+    "floor": 60
+  },
+  "rules": [
+    {
+      "id": "PL-ANCHOR",
+      "title": "A section link lands below the sticky header, not under it",
+      "severity": "blocking",
+      "sha": "581d12f7369f",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 68,
+      "credits": 10.5,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Scroll to the top of the page",
+          "text": "Scroll to the top of the page. Click a navigation link that jumps to a section on the same page.",
+          "status": "pass",
+          "durationS": 45.4,
+          "screenshot": "pl-anchor-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Verify the heading of the section that was…",
+          "text": "Verify the heading of the section that was jumped to is fully visible and is not covered by the header.",
+          "status": "pass",
+          "durationS": 19.5,
+          "screenshot": "pl-anchor-s2.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "5183f16b-d45b-44a6-94ae-cb4cfbf1b8bd",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C260290Z32Y4DEMPJ9PV7/dashboard/share/US_POZ0HL1946SAEE4MF8MXO6CB8UQNKRHVYEFD6M4JTTTEZGWXNXAWUZLBXB01K1YB?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Set scroll-padding-top on the html element and scroll-margin-top on each section to the header height plus a small gap. Give the header an opaque or blurred background so content never shows through it.",
+      "statement": "When a link jumps to a section, the section heading ends up fully visible below the sticky header. The header never covers it."
+    },
+    {
+      "id": "PL-CONSISTENT",
+      "title": "Every page uses the same navigation and footer",
+      "severity": "blocking",
+      "sha": "35f228db8a8a",
+      "status": "fail",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 125,
+      "credits": 39.9,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Open the home page",
+          "text": "Open the home page. Store the navigation labels as 'home_nav'. Use the navigation to open two other pages of the site.",
+          "status": "pass",
+          "durationS": 80.8,
+          "screenshot": "pl-consistent-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Verify on each of those pages that the…",
+          "text": "Verify on each of those pages that the navigation shows the same labels as the stored home_nav and that the page has the same footer as the home page.",
+          "status": "fail",
+          "durationS": 40.8,
+          "screenshot": "pl-consistent-s2.jpg"
+        }
+      ],
+      "failure": {
+        "step": 2,
+        "stepText": "Verify on each of those pages that the navigation shows the same labels as the stored home_nav and that the page has the same footer as the home page.",
+        "message": "The required footer comparison lacks any available home-page footer reference.",
+        "happened": "The test setup saved navigation information but did not save the home page footer needed by this objective.",
+        "suggestedFix": "Update the test setup to visit the home page first and store a footer snapshot or normalized footer text alongside the saved navigation labels.",
+        "severity": "major",
+        "confidence": 0.97,
+        "confirmedBug": false,
+        "pageUrl": "http://127.0.0.1:4310/rules",
+        "screenshot": "pl-consistent-failure.jpg"
+      },
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "f7d5f781-45bb-4bd5-b766-a0965c632238",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C266XGYPG10Y3Z0GFFHEN/dashboard/share/US_L1MDE0ZZ077O0IBZQRNGDP1PPELYEJS4B5FLXL8XMCBTZVU924GGL713Q6GED2LO?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Render the navigation and footer from one shared component or template. Remove page-specific headers and old stylesheets.",
+      "statement": "All pages share one design system. The navigation labels and the footer on the home page appear unchanged on the other pages."
+    },
+    {
+      "id": "PL-CONSOLE",
+      "title": "Pages load and work without console errors or blocked resources",
+      "severity": "blocking",
+      "sha": "ee5151a6e8ca",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 81,
+      "credits": 37.2,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Open the home page and scroll to the bottom",
+          "text": "Open the home page and scroll to the bottom. Verify the page finished loading with its main content visible.",
+          "status": "pass",
+          "durationS": 34.5,
+          "screenshot": "pl-console-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Open one more page from the navigation",
+          "text": "Open one more page from the navigation. Verify that page also finished loading with its main content visible.",
+          "status": "pass",
+          "durationS": 43.8,
+          "screenshot": "pl-console-s2.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "49ee7211-9a48-4dbc-a737-d6fdca955ea5",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C26CE9EHQ1S4DAZ1PSQMV/dashboard/share/US_X90SMZZUAQKYO3WCB6HCRFPD5UDBQEMU021N4706ES7104G52K7X90UF1Z43A8VP?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Open the browser console, fix each error, and add any missing file such as the favicon. Remove inline scripts or hash them in the Content Security Policy.",
+      "statement": "Browsing the main pages produces no console errors, no failed requests and no Content Security Policy violations."
+    },
+    {
+      "id": "PL-COPY",
+      "title": "Headings and labels describe a product, not a finding",
+      "severity": "blocking",
+      "sha": "041929dbd01c",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 48,
+      "credits": 20.1,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Read the main heading, every section heading…",
+          "text": "Read the main heading, every section heading and every badge or chip on the page. Verify none of them reads like an audit finding, a test report, an incident or a postmortem, and none uses capitalised alarm wording such as \"DANGER\", \"BROKEN\" or \"CHEATS ON PURPOSE\", unless the product itself is a security tool.",
+          "status": "pass",
+          "durationS": 44.8,
+          "screenshot": "pl-copy-s1.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "8723552b-0cec-4feb-933b-7e8697e1f035",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C6SJB6WBX95QVS3CPM4AZ/dashboard/share/US_FT5FKENR3R4HDHTY3G43IOFP0SS79TGBNVBHMSHM0CV9SFYAUWSZYE4YALM6G0SP?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Rewrite each heading as what the visitor gets, for example \"Buy some credits\" instead of \"3 sellers flagged\". Move failures and checks into a later section or a collapsed group. Label demo data neutrally in a muted style, for example \"demo seller\".",
+      "statement": "Headings, section titles and status chips describe what the product gives the visitor. None of them reads like a security audit, a test report or a postmortem, and alarm labels are not used for demo or failed items."
+    },
+    {
+      "id": "PL-HERO",
+      "title": "The hero says what the visitor can do and offers the action",
+      "severity": "blocking",
+      "sha": "055c2f227fde",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 60,
+      "credits": 32.1,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Look at the top of the page without scrolling",
+          "text": "Look at the top of the page without scrolling. Store the main heading text as 'hero'. Verify the stored hero text tells a visitor what they can do or get with the product, in everyday words, and does not describe a test, audit, report or incident.",
+          "status": "pass",
+          "durationS": 34.1,
+          "screenshot": "pl-hero-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Verify a primary call-to-action button or link…",
+          "text": "Verify a primary call-to-action button or link is visible without scrolling and its label names an action, such as \"Start\", \"Try\", \"Get\", \"Install\", \"Borrow\" or \"Browse\".",
+          "status": "pass",
+          "durationS": 22.2,
+          "screenshot": "pl-hero-s2.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "0f5dba39-8d61-4302-96bd-93cb2abfc289",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C6ST2627YG0SR2DZ5AM8N/dashboard/share/US_FKQ2ZNBM5O1HX0LHUCDJ5EQRMJOUSR1RIOX83OG8CW19LN8IOD9HDVGPN0YBXJRO?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Rewrite the main heading as the job, for example \"Borrow a tool. Lend one.\" instead of \"Tool lending platform\". Put one primary button directly under it with a verb label. Move proof, verification and security wording to a supporting section further down.",
+      "statement": "The first screen leads with the visitor's job. One heading says what the product does for them in plain words, and one primary button or link starts that job. The heading never describes a test, an audit or an incident."
+    },
+    {
+      "id": "PL-NAV",
+      "title": "The top menu groups pages into categories with submenus",
+      "severity": "blocking",
+      "sha": "6bca123cf8e9",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 96,
+      "credits": 46.1,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Look at the main navigation bar",
+          "text": "Look at the main navigation bar. Verify it shows between 3 and 6 top-level items.",
+          "status": "pass",
+          "durationS": 30.8,
+          "screenshot": "pl-nav-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Hover over a top-level item that groups several…",
+          "text": "Hover over a top-level item that groups several pages. Verify a submenu opens and lists that item's pages or sections.",
+          "status": "pass",
+          "durationS": 36.7,
+          "screenshot": "pl-nav-s2.jpg"
+        },
+        {
+          "index": 3,
+          "heading": "3. Press the Escape key",
+          "text": "Press the Escape key. Verify the submenu closes.",
+          "status": "pass",
+          "durationS": 25.8,
+          "screenshot": "pl-nav-s3.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "66ae5205-faa6-4fa6-9b71-4f27504d2cfb",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79C6SYWD7EX5WMN758A4K91/dashboard/share/US_F4L8WKN97VEDOBVNX4WVD5JO74IWGD0XII9K7C46SNCYJZB6VSJ2QC190W7DSY36?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Group links into three to six categories. Give a category with children a button with aria-haspopup and aria-expanded. Open its menu on hover, on focus and on tap. Close it on Escape and on outside click. Do not trap focus.",
+      "statement": "The top navigation shows three to six category items. A category that holds several pages opens a submenu on hover and on keyboard focus, and Escape closes it."
+    },
+    {
+      "id": "PL-NOTFOUND",
+      "title": "A missing page shows a designed not-found page with a way home",
+      "severity": "advisory",
+      "sha": "930685d543a7",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 40,
+      "credits": 6.4,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Open the site's address followed by the path…",
+          "text": "Open the site's address followed by the path /plumb-missing-page-404. Verify a page in the site's own design appears with a heading that says the page was not found and a link back to the home page.",
+          "status": "pass",
+          "durationS": 36.8,
+          "screenshot": "pl-notfound-s1.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 1,
+        "sample": [
+          {
+            "level": "error",
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:4310/plumb-missing-page-404",
+            "kind": "network"
+          }
+        ]
+      },
+      "sessionId": "c34bd3fd-ffb0-4236-8427-ddb151d591ad",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79CAEN9XQNQW3ZSYAECHND3/dashboard/share/US_GK9GDUZZGCAJL5Z5IPFX5P3EW42E5VP286JMHC1HJZRQQQZEJRAMM875HYA6DYRH?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Add a 404 page that reuses the shared header and footer, says plainly that the page was not found, and links home. Configure the host to serve it for unknown paths.",
+      "statement": "Opening an address that does not exist shows a page in the site's own design, with the navigation and a link back home, not a blank screen or a raw server error."
+    },
+    {
+      "id": "PL-THEME",
+      "title": "Light and dark themes both work and the choice sticks",
+      "severity": "blocking",
+      "sha": "0c2357e69aa8",
+      "status": "pass",
+      "source": "kane",
+      "kind": "author",
+      "durationS": 83,
+      "credits": 33.6,
+      "steps": [
+        {
+          "index": 1,
+          "heading": "1. Look for a control that switches the page…",
+          "text": "Look for a control that switches the page between a light and a dark theme. Verify such a control is visible.",
+          "status": "pass",
+          "durationS": 18.9,
+          "screenshot": "pl-theme-s1.jpg"
+        },
+        {
+          "index": 2,
+          "heading": "2. Click the theme control",
+          "text": "Click the theme control. Verify the page background colour changed.",
+          "status": "pass",
+          "durationS": 34.8,
+          "screenshot": "pl-theme-s2.jpg"
+        },
+        {
+          "index": 3,
+          "heading": "3. Reload the page",
+          "text": "Reload the page. Verify the page still shows the theme that was chosen before the reload.",
+          "status": "pass",
+          "durationS": 26.5,
+          "screenshot": "pl-theme-s3.jpg"
+        }
+      ],
+      "failure": null,
+      "console": {
+        "count": 0,
+        "sample": []
+      },
+      "sessionId": "7f77febf-f8ab-474d-a41b-5869e0e6fcaf",
+      "shareUrl": "https://test-manager.lambdatest.com/projects/01M799JP8CHDENYXHPFSS3M17B/test-cases/01M79CAF0SP40KZ3ZAXVNR8RJD/dashboard/share/US_AK42JP2B93SLSJPXCAE87DVPA6VRZDLA5JWYD7ENYGUZHC4VO760Z9TM5LUW1NC7?type=summary&agentView=true&fqdn=summary-page",
+      "fix": "Add a toggle button in the header with an accessible label such as \"Switch between light and dark theme\". Define colours as tokens swapped by a data-theme attribute on the root element. Save the choice in localStorage and read it in a small inline script in the head, before any stylesheet, so there is no flash of the wrong theme.",
+      "statement": "Every page offers a visible theme switch. Switching changes the page colours, and the choice survives a reload."
+    }
+  ],
+  "totals": {
+    "rules": 8,
+    "pass": 7,
+    "fail": 1,
+    "broken": 0,
+    "skipped": 0,
+    "cached": 0,
+    "blockingFail": 1,
+    "advisoryFail": 0,
+    "replay": 0,
+    "author": 8,
+    "healed": 0
+  },
+  "gate": {
+    "passed": false,
+    "blocking": [
+      "PL-CONSISTENT"
+    ]
+  },
+  "plan": {
+    "reuse": [],
+    "run": [
+      "PL-ANCHOR",
+      "PL-CONSISTENT",
+      "PL-CONSOLE",
+      "PL-COPY",
+      "PL-HERO",
+      "PL-NAV",
+      "PL-NOTFOUND",
+      "PL-THEME"
+    ],
+    "skipped": [],
+    "estimateCredits": 400
+  }
+}

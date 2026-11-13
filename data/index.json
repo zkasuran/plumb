@@ -1,0 +1,543 @@
+{
+  "v": 1,
+  "generatedAt": "2026-11-13T06:45:28.768Z",
+  "sample": false,
+  "project": {
+    "site": "http://127.0.0.1:4173/",
+    "rules": 12,
+    "protect": [
+      "rules/**",
+      "tests/**",
+      "policy/**",
+      "plumb.config.json"
+    ],
+    "agent": "opencode"
+  },
+  "runs": [
+    {
+      "id": "20261113T024105Z-e728",
+      "startedAt": "2026-11-13T02:41:05.409Z",
+      "endedAt": "2026-11-13T02:43:28.924Z",
+      "durationS": 143.5,
+      "mode": "check",
+      "iteration": null,
+      "site": "http://127.0.0.1:4310/",
+      "totals": {
+        "rules": 1,
+        "pass": 1,
+        "fail": 0,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 0,
+        "advisoryFail": 0,
+        "replay": 0,
+        "author": 1,
+        "healed": 0
+      },
+      "gate": {
+        "passed": true,
+        "blocking": []
+      },
+      "credits": {
+        "before": 308.8057,
+        "after": 259.1107,
+        "used": 49.7,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T023348Z-01bc",
+      "startedAt": "2026-11-13T02:33:48.410Z",
+      "endedAt": "2026-11-13T02:40:09.048Z",
+      "durationS": 380.6,
+      "mode": "check",
+      "iteration": null,
+      "site": "http://127.0.0.1:4310/",
+      "totals": {
+        "rules": 8,
+        "pass": 7,
+        "fail": 1,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 1,
+        "advisoryFail": 0,
+        "replay": 0,
+        "author": 8,
+        "healed": 0
+      },
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-CONSISTENT"
+        ]
+      },
+      "credits": {
+        "before": 575.3233,
+        "after": 308.8057,
+        "used": 266.5,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T022348Z-467b",
+      "startedAt": "2026-11-13T02:23:48.905Z",
+      "endedAt": "2026-11-13T02:28:40.834Z",
+      "durationS": 291.9,
+      "mode": "loop",
+      "iteration": 2,
+      "site": "http://127.0.0.1:4173/",
+      "totals": {
+        "rules": 12,
+        "pass": 12,
+        "fail": 0,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 0,
+        "advisoryFail": 0,
+        "replay": 11,
+        "author": 0,
+        "healed": 1
+      },
+      "gate": {
+        "passed": true,
+        "blocking": []
+      },
+      "credits": {
+        "before": 617.9257,
+        "after": 575.3233,
+        "used": 42.6,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T021054Z-de17",
+      "startedAt": "2026-11-13T02:10:54.000Z",
+      "endedAt": "2026-11-13T02:21:21.193Z",
+      "durationS": 627.2,
+      "mode": "loop",
+      "iteration": 1,
+      "site": "http://127.0.0.1:4173/",
+      "totals": {
+        "rules": 12,
+        "pass": 11,
+        "fail": 1,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 1,
+        "advisoryFail": 0,
+        "replay": 9,
+        "author": 2,
+        "healed": 1
+      },
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-NAV"
+        ]
+      },
+      "credits": {
+        "before": 813.3571,
+        "after": 617.9257,
+        "used": 195.4,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T015022Z-b4d5",
+      "startedAt": "2026-11-13T01:50:22.659Z",
+      "endedAt": "2026-11-13T01:59:54.807Z",
+      "durationS": 572.1,
+      "mode": "loop",
+      "iteration": 0,
+      "site": "http://127.0.0.1:4173/",
+      "totals": {
+        "rules": 12,
+        "pass": 6,
+        "fail": 6,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 4,
+        "advisoryFail": 2,
+        "replay": 0,
+        "author": 11,
+        "healed": 0
+      },
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-CONSISTENT",
+          "PL-CONSOLE",
+          "PL-NAV",
+          "PL-THEME"
+        ]
+      },
+      "credits": {
+        "before": 1200,
+        "after": 813.3571,
+        "used": 386.6,
+        "floor": 60
+      }
+    }
+  ],
+  "loops": [
+    {
+      "id": "20261113T015022Z-3df2",
+      "startedAt": "2026-11-13T01:50:22.658Z",
+      "outcome": "green",
+      "agent": "opencode",
+      "iterations": 3,
+      "creditsUsed": 624.6
+    }
+  ],
+  "rules": [
+    {
+      "id": "PL-ANCHOR",
+      "title": "A section link lands below the sticky header, not under it",
+      "severity": "blocking",
+      "applies": [
+        "landing"
+      ],
+      "statement": "When a link jumps to a section, the section heading ends up fully visible below the sticky header. The header never covers it.",
+      "why": "A sticky header that hides the heading the visitor just asked for makes the link look broken.",
+      "fix": "Set scroll-padding-top on the html element and scroll-margin-top on each section to the header height plus a small gap. Give the header an opaque or blurred background so content never shows through it.",
+      "steps": [
+        "Scroll to the top of the page. Click a navigation link that jumps to a section on the same page.",
+        "Verify the heading of the section that was jumped to is fully visible and is not covered by the header."
+      ],
+      "file": "@house/PL-ANCHOR.md",
+      "sha": "581d12f7369f",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-anchor, blocking]\nmax_steps: 25\n---\n\n# PL-ANCHOR A section link lands below the sticky header, not under it\n\n<!-- generated by plumb from @house/PL-ANCHOR.md (rule 581d12f7369f). Edit the rule, not this file. -->\n\n## 1. Scroll to the top of the page\nScroll to the top of the page. Click a navigation link that jumps to a section on the same page.\n\n## 2. Verify the heading of the section that was…\nVerify the heading of the section that was jumped to is fully visible and is not covered by the header.\n",
+      "stats": {
+        "runs": 4,
+        "pass": 4,
+        "fail": 0,
+        "credits": 55.5,
+        "authored": 2,
+        "replayed": 0,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-CONSISTENT",
+      "title": "Every page uses the same navigation and footer",
+      "severity": "blocking",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "All pages share one design system. The navigation labels and the footer on the home page appear unchanged on the other pages.",
+      "why": "A page with its own old header looks like a different tool and breaks trust.",
+      "fix": "Render the navigation and footer from one shared component or template. Remove page-specific headers and old stylesheets.",
+      "steps": [
+        "Open the home page. Store the navigation labels as 'home_nav' and the footer text as 'home_footer'. Use the navigation to open two other pages of the site.",
+        "Verify on each of those pages that the navigation shows the same labels as the stored home_nav and that the footer text matches the stored home_footer."
+      ],
+      "file": "@house/PL-CONSISTENT.md",
+      "sha": "030a48eeab59",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-consistent, blocking]\nmax_steps: 25\n---\n\n# PL-CONSISTENT Every page uses the same navigation and footer\n\n<!-- generated by plumb from @house/PL-CONSISTENT.md (rule 030a48eeab59). Edit the rule, not this file. -->\n\n## 1. Open the home page\nOpen the home page. Store the navigation labels as 'home_nav' and the footer text as 'home_footer'. Use the navigation to open two other pages of the site.\n\n## 2. Verify on each of those pages that the…\nVerify on each of those pages that the navigation shows the same labels as the stored home_nav and that the footer text matches the stored home_footer.\n",
+      "stats": {
+        "runs": 5,
+        "pass": 3,
+        "fail": 2,
+        "credits": 101.3,
+        "authored": 3,
+        "replayed": 1,
+        "lastStatus": "pass"
+      }
+    },
+    {
+      "id": "PL-CONSOLE",
+      "title": "Pages load and work without console errors or blocked resources",
+      "severity": "blocking",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Browsing the main pages produces no console errors, no failed requests and no Content Security Policy violations.",
+      "why": "A console error is a bug a visitor never reports. A CSP violation means the page is either broken or running something it should not.",
+      "fix": "Open the browser console, fix each error, and add any missing file such as the favicon. Remove inline scripts or hash them in the Content Security Policy.",
+      "steps": [
+        "Open the home page and scroll to the bottom. Verify the page finished loading with its main content visible.",
+        "Open one more page from the navigation. Verify that page also finished loading with its main content visible."
+      ],
+      "file": "@house/PL-CONSOLE.md",
+      "sha": "ee5151a6e8ca",
+      "evidence": [
+        "console"
+      ],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-console, blocking]\nmax_steps: 25\n---\n\n# PL-CONSOLE Pages load and work without console errors or blocked resources\n\n<!-- generated by plumb from @house/PL-CONSOLE.md (rule ee5151a6e8ca). Edit the rule, not this file. -->\n\n## 1. Open the home page and scroll to the bottom\nOpen the home page and scroll to the bottom. Verify the page finished loading with its main content visible.\n\n## 2. Open one more page from the navigation\nOpen one more page from the navigation. Verify that page also finished loading with its main content visible.\n",
+      "stats": {
+        "runs": 4,
+        "pass": 3,
+        "fail": 1,
+        "credits": 70.7,
+        "authored": 2,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-CONTRAST",
+      "title": "Text stays readable in both themes",
+      "severity": "advisory",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Body text and muted text are comfortably legible against their background in the light theme and in the dark theme.",
+      "why": "Low contrast is the most common reason a dark or light variant ships half finished.",
+      "fix": "Define text and background as paired tokens per theme and keep contrast at AA or better. Tune muted text separately for each theme.",
+      "steps": [
+        "Look at the page in its current theme. Verify the body text and the smaller muted text are clearly legible against their backgrounds.",
+        "Switch to the other theme with the theme control. Verify the body text and the smaller muted text are still clearly legible."
+      ],
+      "file": "@house/PL-CONTRAST.md",
+      "sha": "db170004a842",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-contrast, advisory]\nmax_steps: 25\n---\n\n# PL-CONTRAST Text stays readable in both themes\n\n<!-- generated by plumb from @house/PL-CONTRAST.md (rule db170004a842). Edit the rule, not this file. -->\n\n## 1. Look at the page in its current theme\nLook at the page in its current theme. Verify the body text and the smaller muted text are clearly legible against their backgrounds.\n\n## 2. Switch to the other theme with the theme control\nSwitch to the other theme with the theme control. Verify the body text and the smaller muted text are still clearly legible.\n",
+      "stats": {
+        "runs": 3,
+        "pass": 2,
+        "fail": 1,
+        "credits": 56.6,
+        "authored": 1,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-COPY",
+      "title": "Headings and labels describe a product, not a finding",
+      "severity": "blocking",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Headings, section titles and status chips describe what the product gives the visitor. None of them reads like a security audit, a test report or a postmortem, and alarm labels are not used for demo or failed items.",
+      "why": "Copy that sounds like a pentest finding makes a product page feel like an incident. Verification and security are the reason to trust the product, never its headline.",
+      "fix": "Rewrite each heading as what the visitor gets, for example \"Buy some credits\" instead of \"3 sellers flagged\". Move failures and checks into a later section or a collapsed group. Label demo data neutrally in a muted style, for example \"demo seller\".",
+      "steps": [
+        "Read the main heading, every section heading and every badge or chip on the page. Verify none of them reads like an audit finding, a test report, an incident or a postmortem, and none uses capitalised alarm wording such as \"DANGER\", \"BROKEN\" or \"CHEATS ON PURPOSE\", unless the product itself is a security tool."
+      ],
+      "file": "@house/PL-COPY.md",
+      "sha": "041929dbd01c",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-copy, blocking]\nmax_steps: 25\n---\n\n# PL-COPY Headings and labels describe a product, not a finding\n\n<!-- generated by plumb from @house/PL-COPY.md (rule 041929dbd01c). Edit the rule, not this file. -->\n\n## 1. Read the main heading, every section heading…\nRead the main heading, every section heading and every badge or chip on the page. Verify none of them reads like an audit finding, a test report, an incident or a postmortem, and none uses capitalised alarm wording such as \"DANGER\", \"BROKEN\" or \"CHEATS ON PURPOSE\", unless the product itself is a security tool.\n",
+      "stats": {
+        "runs": 4,
+        "pass": 4,
+        "fail": 0,
+        "credits": 38.1,
+        "authored": 2,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-FOCUS",
+      "title": "Keyboard focus is visible and reaches the main actions",
+      "severity": "advisory",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Pressing Tab moves a clearly visible focus ring through the links and buttons in a sensible order, and reaches the primary action.",
+      "why": "Keyboard users cannot use a page where they cannot see where they are.",
+      "fix": "Do not remove outlines. Add a focus-visible style with a two pixel ring in the accent colour to links, buttons and form fields.",
+      "steps": [
+        "Press the Tab key four times. Verify a visible focus ring or outline marks the element that has focus after each press."
+      ],
+      "file": "@house/PL-FOCUS.md",
+      "sha": "bbccb28471fb",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-focus, advisory]\nmax_steps: 25\n---\n\n# PL-FOCUS Keyboard focus is visible and reaches the main actions\n\n<!-- generated by plumb from @house/PL-FOCUS.md (rule bbccb28471fb). Edit the rule, not this file. -->\n\n## 1. Press the Tab key four times\nPress the Tab key four times. Verify a visible focus ring or outline marks the element that has focus after each press.\n",
+      "stats": {
+        "runs": 3,
+        "pass": 3,
+        "fail": 0,
+        "credits": 37,
+        "authored": 1,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-HERO",
+      "title": "The hero says what the visitor can do and offers the action",
+      "severity": "blocking",
+      "applies": [
+        "landing"
+      ],
+      "statement": "The first screen leads with the visitor's job. One heading says what the product does for them in plain words, and one primary button or link starts that job. The heading never describes a test, an audit or an incident.",
+      "why": "Visitors decide in seconds. A heading that names the product's category or reads like a report gives them nothing to do. A heading that names the job and a button that starts it gets them moving.",
+      "fix": "Rewrite the main heading as the job, for example \"Borrow a tool. Lend one.\" instead of \"Tool lending platform\". Put one primary button directly under it with a verb label. Move proof, verification and security wording to a supporting section further down.",
+      "steps": [
+        "Look at the top of the page without scrolling. Store the main heading text as 'hero'. Verify the stored hero text tells a visitor what they can do or get with the product, in everyday words, and does not describe a test, audit, report or incident.",
+        "Verify a primary call-to-action button or link is visible without scrolling and its label names an action, such as \"Start\", \"Try\", \"Get\", \"Install\", \"Borrow\" or \"Browse\"."
+      ],
+      "file": "@house/PL-HERO.md",
+      "sha": "055c2f227fde",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-hero, blocking]\nmax_steps: 25\n---\n\n# PL-HERO The hero says what the visitor can do and offers the action\n\n<!-- generated by plumb from @house/PL-HERO.md (rule 055c2f227fde). Edit the rule, not this file. -->\n\n## 1. Look at the top of the page without scrolling\nLook at the top of the page without scrolling. Store the main heading text as 'hero'. Verify the stored hero text tells a visitor what they can do or get with the product, in everyday words, and does not describe a test, audit, report or incident.\n\n## 2. Verify a primary call-to-action button or link…\nVerify a primary call-to-action button or link is visible without scrolling and its label names an action, such as \"Start\", \"Try\", \"Get\", \"Install\", \"Borrow\" or \"Browse\".\n",
+      "stats": {
+        "runs": 4,
+        "pass": 4,
+        "fail": 0,
+        "credits": 65.9,
+        "authored": 2,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-NAV",
+      "title": "The top menu groups pages into categories with submenus",
+      "severity": "blocking",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "The top navigation shows three to six category items. A category that holds several pages opens a submenu on hover and on keyboard focus, and Escape closes it.",
+      "why": "A flat pile of links makes visitors read everything to find one thing. Categories with submenus let them scan the structure of the whole site from the first screen.",
+      "fix": "Group links into three to six categories. Give a category with children a button with aria-haspopup and aria-expanded. Open its menu on hover, on focus and on tap. Close it on Escape and on outside click. Do not trap focus.",
+      "steps": [
+        "Look at the main navigation bar. Verify it shows between 3 and 6 top-level items.",
+        "Hover over a top-level item that groups several pages. Verify a submenu opens and lists that item's pages or sections.",
+        "Press the Escape key. Verify the submenu closes."
+      ],
+      "file": "@house/PL-NAV.md",
+      "sha": "6bca123cf8e9",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-nav, blocking]\nmax_steps: 25\n---\n\n# PL-NAV The top menu groups pages into categories with submenus\n\n<!-- generated by plumb from @house/PL-NAV.md (rule 6bca123cf8e9). Edit the rule, not this file. -->\n\n## 1. Look at the main navigation bar\nLook at the main navigation bar. Verify it shows between 3 and 6 top-level items.\n\n## 2. Hover over a top-level item that groups several…\nHover over a top-level item that groups several pages. Verify a submenu opens and lists that item's pages or sections.\n\n## 3. Press the Escape key\nPress the Escape key. Verify the submenu closes.\n",
+      "stats": {
+        "runs": 4,
+        "pass": 2,
+        "fail": 2,
+        "credits": 133.6,
+        "authored": 2,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-NOTFOUND",
+      "title": "A missing page shows a designed not-found page with a way home",
+      "severity": "advisory",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Opening an address that does not exist shows a page in the site's own design, with the navigation and a link back home, not a blank screen or a raw server error.",
+      "why": "Visitors mistype and follow stale links. A dead end with no way back loses them.",
+      "fix": "Add a 404 page that reuses the shared header and footer, says plainly that the page was not found, and links home. Configure the host to serve it for unknown paths.",
+      "steps": [
+        "Open the site's address followed by the path /plumb-missing-page-404. Verify a page in the site's own design appears with a heading that says the page was not found and a link back to the home page."
+      ],
+      "file": "@house/PL-NOTFOUND.md",
+      "sha": "930685d543a7",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-notfound, advisory]\nmax_steps: 25\n---\n\n# PL-NOTFOUND A missing page shows a designed not-found page with a way home\n\n<!-- generated by plumb from @house/PL-NOTFOUND.md (rule 930685d543a7). Edit the rule, not this file. -->\n\n## 1. Open the site's address followed by the path…\nOpen the site's address followed by the path /plumb-missing-page-404. Verify a page in the site's own design appears with a heading that says the page was not found and a link back to the home page.\n",
+      "stats": {
+        "runs": 4,
+        "pass": 3,
+        "fail": 1,
+        "credits": 28.8,
+        "authored": 3,
+        "replayed": 1,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-SIDES",
+      "title": "Both sides of a two-sided product get a path and a section",
+      "severity": "advisory",
+      "applies": [
+        "landing"
+      ],
+      "statement": "If the product serves two kinds of people, such as buyers and sellers or borrowers and lenders, each side has its own path card and its own short section. A one-sided product says plainly who it is for.",
+      "why": "A page that only speaks to one side loses the other. Selling or lending should be as visible as buying or borrowing.",
+      "fix": "Add a second path card for the missing side with its own action button. Add a short \"how it works in three steps\" strip for each side. Show both sides' commands if the product has a CLI.",
+      "steps": [
+        "Scroll through the page. Verify the page either gives each kind of user, for example buyers and sellers, its own labelled card or section, or states plainly in one sentence who the product is for."
+      ],
+      "file": "@house/PL-SIDES.md",
+      "sha": "eeca5e92627b",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-sides, advisory]\nmax_steps: 25\n---\n\n# PL-SIDES Both sides of a two-sided product get a path and a section\n\n<!-- generated by plumb from @house/PL-SIDES.md (rule eeca5e92627b). Edit the rule, not this file. -->\n\n## 1. Scroll through the page\nScroll through the page. Verify the page either gives each kind of user, for example buyers and sellers, its own labelled card or section, or states plainly in one sentence who the product is for.\n",
+      "stats": {
+        "runs": 3,
+        "pass": 3,
+        "fail": 0,
+        "credits": 11.9,
+        "authored": 1,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-STATUS",
+      "title": "Status shows what the visitor cares about, not internals",
+      "severity": "advisory",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Status text and chips say things a visitor cares about, such as \"Market open\" or \"3 listings for sale\". Internal accounts, grader names, challenge windows and contract plumbing are kept to docs or the footer.",
+      "why": "Internal identifiers add noise and make the product look unfinished.",
+      "fix": "Replace internal wording with a plain statement of state. Move identifiers to a details row, the docs or the footer.",
+      "steps": [
+        "Find the status text, badge or banner near the top of the page. Verify it states something a visitor cares about and shows no internal identifier, account id, job id or contract plumbing."
+      ],
+      "file": "@house/PL-STATUS.md",
+      "sha": "5cd9ed257063",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-status, advisory]\nmax_steps: 25\n---\n\n# PL-STATUS Status shows what the visitor cares about, not internals\n\n<!-- generated by plumb from @house/PL-STATUS.md (rule 5cd9ed257063). Edit the rule, not this file. -->\n\n## 1. Find the status text, badge or banner near the…\nFind the status text, badge or banner near the top of the page. Verify it states something a visitor cares about and shows no internal identifier, account id, job id or contract plumbing.\n",
+      "stats": {
+        "runs": 3,
+        "pass": 3,
+        "fail": 0,
+        "credits": 20.5,
+        "authored": 1,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    },
+    {
+      "id": "PL-THEME",
+      "title": "Light and dark themes both work and the choice sticks",
+      "severity": "blocking",
+      "applies": [
+        "landing",
+        "app"
+      ],
+      "statement": "Every page offers a visible theme switch. Switching changes the page colours, and the choice survives a reload.",
+      "why": "Some people read in the dark and some in daylight. A site that ships only one theme, or forgets the choice on reload, makes them fight it every visit.",
+      "fix": "Add a toggle button in the header with an accessible label such as \"Switch between light and dark theme\". Define colours as tokens swapped by a data-theme attribute on the root element. Save the choice in localStorage and read it in a small inline script in the head, before any stylesheet, so there is no flash of the wrong theme.",
+      "steps": [
+        "Look for a control that switches the page between a light and a dark theme. Verify such a control is visible.",
+        "Click the theme control. Verify the page background colour changed.",
+        "Reload the page. Verify the page still shows the theme that was chosen before the reload."
+      ],
+      "file": "@house/PL-THEME.md",
+      "sha": "0c2357e69aa8",
+      "evidence": [],
+      "testMd": "---\nmode: testing\ntags: [plumb, pl-theme, blocking]\nmax_steps: 25\n---\n\n# PL-THEME Light and dark themes both work and the choice sticks\n\n<!-- generated by plumb from @house/PL-THEME.md (rule 0c2357e69aa8). Edit the rule, not this file. -->\n\n## 1. Look for a control that switches the page…\nLook for a control that switches the page between a light and a dark theme. Verify such a control is visible.\n\n## 2. Click the theme control\nClick the theme control. Verify the page background colour changed.\n\n## 3. Reload the page\nReload the page. Verify the page still shows the theme that was chosen before the reload.\n",
+      "stats": {
+        "runs": 4,
+        "pass": 3,
+        "fail": 1,
+        "credits": 100.1,
+        "authored": 2,
+        "replayed": 2,
+        "lastStatus": null
+      }
+    }
+  ]
+}
