@@ -2,6 +2,72 @@
   "v": 1,
   "runs": [
     {
+      "id": "20261113T024105Z-e728",
+      "startedAt": "2026-11-13T02:41:05.409Z",
+      "endedAt": "2026-11-13T02:43:28.924Z",
+      "durationS": 143.5,
+      "mode": "check",
+      "iteration": null,
+      "site": "http://127.0.0.1:4310/",
+      "totals": {
+        "rules": 1,
+        "pass": 1,
+        "fail": 0,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 0,
+        "advisoryFail": 0,
+        "replay": 0,
+        "author": 1,
+        "healed": 0
+      },
+      "gate": {
+        "passed": true,
+        "blocking": []
+      },
+      "credits": {
+        "before": 308.8057,
+        "after": 259.1107,
+        "used": 49.7,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T023348Z-01bc",
+      "startedAt": "2026-11-13T02:33:48.410Z",
+      "endedAt": "2026-11-13T02:40:09.048Z",
+      "durationS": 380.6,
+      "mode": "check",
+      "iteration": null,
+      "site": "http://127.0.0.1:4310/",
+      "totals": {
+        "rules": 8,
+        "pass": 7,
+        "fail": 1,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 1,
+        "advisoryFail": 0,
+        "replay": 0,
+        "author": 8,
+        "healed": 0
+      },
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-CONSISTENT"
+        ]
+      },
+      "credits": {
+        "before": 575.3233,
+        "after": 308.8057,
+        "used": 266.5,
+        "floor": 60
+      }
+    },
+    {
       "id": "20261113T022348Z-467b",
       "startedAt": "2026-11-13T02:23:48.905Z",
       "endedAt": "2026-11-13T02:28:40.834Z",

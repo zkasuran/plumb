@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useAsync, useData } from '../lib/data';
+import { useAsync, useData, useHeadlineRun } from '../lib/data';
 import { Chip, EmptyState, ErrorNote, PageHead, RuleChip, Skeleton, CodeBlock } from '../components/ui';
 import { GateBanner, RuleDetailBlock, RunList } from '../components/RunViews';
 import { LoopPlayer } from '../components/LoopPlayer';
@@ -83,9 +83,8 @@ function LivePanel() {
 /* ---------- overview ---------- */
 
 export function StudioHome() {
-  const { state, getRun } = useData();
-  const id = state.status === 'ready' ? state.index.runs[0]?.id : undefined;
-  const latest = useAsync<Report | null>(`studio-latest:${id ?? 'none'}`, async () => (id ? getRun(id) : null));
+  const { state } = useData();
+  const latest = useHeadlineRun();
   if (state.status === 'loading') return <div className="wrap section"><Skeleton lines={8} /></div>;
   if (state.status === 'error') return <div className="wrap section"><ErrorNote message={state.message} /></div>;
   const idx = state.index;

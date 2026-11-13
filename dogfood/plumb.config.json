@@ -1,0 +1,6 @@
+{
+  "site": { "url": "http://127.0.0.1:4310/", "dir": "../studio/dist" },
+  "rules": { "dirs": ["@house"], "exclude": ["PL-SIDES", "PL-STATUS", "PL-CONTRAST", "PL-FOCUS"] },
+  "kane": { "parallel": 3 },
+  "credits": { "floor": 60 }
+}

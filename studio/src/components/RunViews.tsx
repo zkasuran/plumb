@@ -51,6 +51,7 @@ export function RunList({ runs }: { runs: RunSummary[] }) {
         <thead>
           <tr>
             <th>Run</th>
+            <th>Site</th>
             <th>Result</th>
             <th className="num">Rules passing</th>
             <th className="num">Credits</th>
@@ -68,6 +69,7 @@ export function RunList({ runs }: { runs: RunSummary[] }) {
                   </Link>
                   <div className="muted small">{r.mode}{r.iteration != null ? ` · iteration ${r.iteration}` : ''}</div>
                 </td>
+                <td className="small">{r.site.replace(/^https?:\/\//, '')}</td>
                 <td>
                   <Chip tone={g.tone}>{g.label}</Chip>
                 </td>

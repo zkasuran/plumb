@@ -176,3 +176,15 @@ export function useAsync<T>(key: string, load: () => Promise<T>) {
   }, [key]);
   return s;
 }
+
+/** The run to headline: the end of the newest loop if there is one, else the newest run. */
+export function useHeadlineRun() {
+  const { state, getLoop, getRun } = useData();
+  const idx = state.status === 'ready' ? state.index : null;
+  const loopId = idx?.loops[0]?.id;
+  const runId = idx?.runs[0]?.id;
+  return useAsync<Report | null>(`headline:${loopId ?? runId ?? 'none'}`, async () => {
+    if (loopId) return getRun((await getLoop(loopId)).finalRunId);
+    return runId ? getRun(runId) : null;
+  });
+}

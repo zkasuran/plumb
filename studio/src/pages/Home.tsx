@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAsync, useData } from '../lib/data';
+import { useData, useHeadlineRun } from '../lib/data';
 import { CodeBlock, EmptyState, Skeleton } from '../components/ui';
 import { GateBanner, RuleRows } from '../components/RunViews';
 import { Coins, Loop, Pencil, Shield, Terminal } from '../components/icons';
-import type { Report } from '../lib/types';
 
 const RULE_SAMPLE = `---
 id: ACME-CTA
@@ -30,18 +29,9 @@ plumb loop --agent claude    # check, let an agent fix, check again
 plumb hook install kiro      # Kiro hooks, steering and MCP in one go`;
 
 function Preview() {
-  const { state, getRun } = useData();
-  const idx = state.status === 'ready' ? state.index : null;
-  const runId = idx ? (idx.loops[0] ? undefined : idx.runs[0]?.id) : undefined;
-  const loopId = idx?.loops[0]?.id;
-  const { getLoop } = useData();
-  const r = useAsync<Report | null>(`home-preview:${loopId ?? runId ?? 'none'}`, async () => {
-    if (loopId) {
-      const loop = await getLoop(loopId);
-      return getRun(loop.finalRunId);
-    }
-    return runId ? getRun(runId) : null;
-  });
+  const { state } = useData();
+  const loopId = state.status === 'ready' ? state.index.loops[0]?.id : undefined;
+  const r = useHeadlineRun();
   if (state.status === 'loading' || r.status === 'loading') return <div className="card"><Skeleton lines={6} /></div>;
   if (r.status === 'error' || !r.value)
     return (
@@ -57,9 +47,7 @@ function Preview() {
           <strong>{report.site.url.replace(/^https?:\/\//, '')}</strong>
           <div className="muted small">{loopId ? 'After the agent fixed it' : 'Latest check'}</div>
         </div>
-        <span className="chip ok">
-          Recorded run
-        </span>
+        <span className="chip ok">Recorded run</span>
       </header>
       <RuleRows report={{ ...report, rules: report.rules.slice(0, 6) }} />
       {report.rules.length > 6 && (
@@ -74,9 +62,7 @@ function Preview() {
 }
 
 function HomeBanner() {
-  const { state, getRun } = useData();
-  const id = state.status === 'ready' ? state.index.runs[0]?.id : undefined;
-  const r = useAsync<Report | null>(`home-banner:${id ?? 'none'}`, async () => (id ? getRun(id) : null));
+  const r = useHeadlineRun();
   if (r.status !== 'ready' || !r.value) return null;
   return <GateBanner report={r.value} />;
 }

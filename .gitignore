@@ -14,3 +14,5 @@ studio/dist/
 studio/public/data/
 **/.testmuai/
 **/tests/plumb/output-*/
+dogfood/.plumb/
+dogfood/tests/
