@@ -1,0 +1,163 @@
+{
+  "v": 1,
+  "id": "20261113T015022Z-3df2",
+  "startedAt": "2026-11-13T01:50:22.658Z",
+  "endedAt": "2026-11-13T02:28:40.835Z",
+  "agent": "opencode",
+  "site": "http://127.0.0.1:4173/",
+  "outcome": "green",
+  "iterations": [
+    {
+      "iteration": 0,
+      "runId": "20261113T015022Z-b4d5",
+      "runDir": ".plumb/runs/20261113T015022Z-b4d5",
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-CONSISTENT",
+          "PL-CONSOLE",
+          "PL-NAV",
+          "PL-THEME"
+        ]
+      },
+      "totals": {
+        "rules": 12,
+        "pass": 6,
+        "fail": 6,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 4,
+        "advisoryFail": 2,
+        "replay": 0,
+        "author": 11,
+        "healed": 0
+      },
+      "credits": 386.6,
+      "moved": null,
+      "agent": null
+    },
+    {
+      "iteration": 1,
+      "runId": "20261113T021054Z-de17",
+      "runDir": ".plumb/runs/20261113T021054Z-de17",
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-NAV"
+        ]
+      },
+      "totals": {
+        "rules": 12,
+        "pass": 11,
+        "fail": 1,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 1,
+        "advisoryFail": 0,
+        "replay": 9,
+        "author": 2,
+        "healed": 1
+      },
+      "credits": 195.4,
+      "moved": {
+        "fixed": [
+          "PL-CONSISTENT",
+          "PL-CONSOLE",
+          "PL-CONTRAST",
+          "PL-NOTFOUND",
+          "PL-THEME"
+        ],
+        "regressed": [],
+        "stillFailing": [
+          "PL-NAV"
+        ],
+        "stillPassing": [
+          "PL-ANCHOR",
+          "PL-COPY",
+          "PL-FOCUS",
+          "PL-HERO",
+          "PL-SIDES",
+          "PL-STATUS"
+        ]
+      },
+      "agent": {
+        "name": "opencode",
+        "model": "gpt-6.1-sol",
+        "exit": 0,
+        "durationS": 659.2,
+        "timedOut": false,
+        "filesChanged": [
+          "404.html",
+          "browse.html",
+          "catalogue.js",
+          "how-it-works.html",
+          "lend.html",
+          "site.js",
+          "styles.css",
+          "theme.js"
+        ],
+        "tampered": [],
+        "summary": "?? lantern/site.js\n?? tests/\nPL-CONSISTENT: Added shared navigation and footer rendering across all pages.\nPL-CONSOLE: Added missing scripts and linked pages, fixing resource errors and inactive controls.\nPL-CONTRAST: Strengthened muted text and made highlights and placeholders readable in both themes.\nPL-NAV: Added hover, focus and tap submenu handling with Escape and outside-click dismissal.\nPL-NOTFOUND: Added branded `404.html` with shared navigation and a home link, using the server’s existing fallback.\nPL-THEME: Wired the toggle to update page colours, accessible labels and the saved preference across reloads."
+      }
+    },
+    {
+      "iteration": 2,
+      "runId": "20261113T022348Z-467b",
+      "runDir": ".plumb/runs/20261113T022348Z-467b",
+      "gate": {
+        "passed": true,
+        "blocking": []
+      },
+      "totals": {
+        "rules": 12,
+        "pass": 12,
+        "fail": 0,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 0,
+        "advisoryFail": 0,
+        "replay": 11,
+        "author": 0,
+        "healed": 1
+      },
+      "credits": 42.6,
+      "moved": {
+        "fixed": [
+          "PL-NAV"
+        ],
+        "regressed": [],
+        "stillFailing": [],
+        "stillPassing": [
+          "PL-ANCHOR",
+          "PL-CONSISTENT",
+          "PL-CONSOLE",
+          "PL-CONTRAST",
+          "PL-COPY",
+          "PL-FOCUS",
+          "PL-HERO",
+          "PL-NOTFOUND",
+          "PL-SIDES",
+          "PL-STATUS",
+          "PL-THEME"
+        ]
+      },
+      "agent": {
+        "name": "opencode",
+        "model": "gpt-6.1-sol",
+        "exit": 0,
+        "durationS": 147.7,
+        "timedOut": false,
+        "filesChanged": [
+          "site.js"
+        ],
+        "tampered": [],
+        "summary": "assert not mobile.locator(\".primary-nav\").is_visible()\nassert mobile.locator(\".mobile-toggle\").get_attribute(\"aria-expanded\") == \"false\"\nprint(\"Mobile: focused submenu and page-level navigation Escape dismissal passed\")\nbrowser.close()'\nBrowse tools: hover, keyboard, Escape, reopening and focus return passed\nHow it works: hover, keyboard, Escape, reopening and focus return passed\nMobile: focused submenu and page-level navigation Escape dismissal passed\nPL-NAV: Updated `lantern/site.js` so Escape closes hover-opened submenus even when focus is outside navigation. Verified in a real browser."
+      }
+    }
+  ],
+  "creditsUsed": 624.6,
+  "finalRunId": "20261113T022348Z-467b"
+}

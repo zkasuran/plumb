@@ -8,7 +8,7 @@ export function Chip({ tone, children }: { tone: Tone; children: ReactNode }) {
   return <span className={`chip ${tone}`}>{children}</span>;
 }
 
-export function RuleChip({ r }: { r: Pick<RuleResult, 'status' | 'severity' | 'source'> }) {
+export function RuleChip({ r }: { r: Pick<RuleResult, 'status' | 'severity' | 'source'> & { failure?: RuleResult['failure'] } }) {
   const s = ruleState(r);
   return <Chip tone={s.tone}>{s.label}</Chip>;
 }

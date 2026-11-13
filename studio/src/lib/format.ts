@@ -29,8 +29,14 @@ export function credits(n: number | null | undefined): string {
 
 export type Tone = 'ok' | 'warn' | 'muted' | 'info';
 
+/** Kane could not start the rule (a startup race), so the page was never judged. */
+export function isInfra(r: { failure?: { message?: string | null } | null }): boolean {
+  return /project\/folder gate failed|no TMS credentials/i.test(r.failure?.message ?? '');
+}
+
 /** Words for a rule's state. Failure wording stays plain: "Needs work", not an alarm. */
-export function ruleState(r: Pick<RuleResult, 'status' | 'severity' | 'source'>): { label: string; tone: Tone } {
+export function ruleState(r: Pick<RuleResult, 'status' | 'severity' | 'source'> & { failure?: RuleResult['failure'] }): { label: string; tone: Tone } {
+  if (r.status !== 'pass' && isInfra(r)) return { label: 'Not judged', tone: 'muted' };
   if (r.status === 'pass') return { label: r.source === 'cache' ? 'Passing · reused' : 'Passing', tone: 'ok' };
   if (r.status === 'skipped') return { label: 'Not run', tone: 'muted' };
   if (r.severity === 'advisory') return { label: 'Suggestion', tone: 'info' };

@@ -195,7 +195,7 @@ export async function runCheck({ root, cfg, flags = {}, onProgress = () => {} })
     iteration: flags.iteration ?? null,
     dryRun: !!flags.dryRun,
     site: { url, kind: fp.kind, fingerprint: fp.hash, files: fp.files },
-    kane: { version: status.version, user: status.user, executions },
+    kane: { version: status.version, executions },
     credits: { before, after, used: before != null && after != null ? round(before - after, 1) : null, floor: cfg.credits.floor },
     rules: ordered,
     totals,

@@ -1,7 +1,7 @@
 node_modules/
 .hq/
 .plumb/runs/*/tmp/
-.testmuai/evidence/
+**/.testmuai/evidence/
 .testmuai/tests/
 .context/
 *.log
@@ -12,3 +12,5 @@ fixtures/probe/
 studio/node_modules/
 studio/dist/
 studio/public/data/
+**/.testmuai/
+**/tests/plumb/output-*/

@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "loops": [
+    {
+      "id": "20261113T015022Z-3df2",
+      "startedAt": "2026-11-13T01:50:22.658Z",
+      "outcome": "green",
+      "agent": "opencode",
+      "iterations": 3,
+      "creditsUsed": 624.6
+    }
+  ]
+}

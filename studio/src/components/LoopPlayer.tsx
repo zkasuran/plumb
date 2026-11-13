@@ -58,7 +58,7 @@ export function LoopPlayer({ loop, reports }: { loop: LoopRecord; reports: Repor
         {beat.kind === 'agent' && entry?.agent && (
           <div className="callout info fade-in" key={`agent-${it}`}>
             <strong>
-              {loop.agent} read the fix brief and changed {entry.agent.filesChanged.length} file{entry.agent.filesChanged.length === 1 ? '' : 's'} in {secs(entry.agent.durationS)}
+              {loop.agent}{entry.agent.model ? ` (${entry.agent.model})` : ''} read the fix brief and changed {entry.agent.filesChanged.length} file{entry.agent.filesChanged.length === 1 ? '' : 's'} in {secs(entry.agent.durationS)}
             </strong>
             {entry.agent.filesChanged.length > 0 && <div className="mono small">{entry.agent.filesChanged.join(', ')}</div>}
             {entry.agent.tampered.length > 0 && <div className="small">It also tried to edit {entry.agent.tampered.join(', ')}. Plumb restored those files.</div>}

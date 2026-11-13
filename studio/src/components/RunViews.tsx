@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Report, RuleResult, RunSummary } from '../lib/types';
-import { credits, gateLabel, kindLabel, secs, when } from '../lib/format';
+import { credits, gateLabel, isInfra, kindLabel, secs, when } from '../lib/format';
 import { Chip, RuleChip, Shot } from './ui';
 import { useData } from '../lib/data';
 
@@ -120,7 +120,13 @@ export function RuleDetailBlock({ report, r }: { report: Report; r: RuleResult }
             </li>
           ))}
         </ol>
-        {f && (
+        {f && isInfra(r) && (
+          <div className="callout info">
+            <strong>Kane did not get to judge this rule</strong>
+            Three rules started at once and Kane was still choosing a project. Nothing here says anything about the page. Plumb now runs a rule like this again on its own.
+          </div>
+        )}
+        {f && !isInfra(r) && (
           <div className="callout">
             <strong>{f.step ? `Step ${f.step} needs work` : 'What the browser reported'}</strong>
             {f.happened ?? f.message}

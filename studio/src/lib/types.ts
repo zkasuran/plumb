@@ -68,7 +68,7 @@ export interface Report {
   iteration: number | null;
   dryRun: boolean;
   site: { url: string; kind: string; fingerprint: string | null; files: number };
-  kane: { version: string | null; user: string | null; executions: { id: string | null; exit: number | null; status: string; durationS: number | null; verdict: { result: string; failedGates: string[] } | null }[] };
+  kane: { version: string | null; user?: string | null; executions: { id: string | null; exit: number | null; status: string; durationS: number | null; verdict: { result: string; failedGates: string[] } | null }[] };
   credits: { before: number | null; after: number | null; used: number | null; floor: number };
   rules: RuleResult[];
   totals: Totals;
@@ -96,7 +96,7 @@ export interface LoopIteration {
   totals: Totals;
   credits: number | null;
   moved: { fixed: string[]; regressed: string[]; stillFailing: string[]; stillPassing: string[] } | null;
-  agent: { name: string; exit: number; durationS: number; timedOut: boolean; filesChanged: string[]; tampered: string[]; summary: string } | null;
+  agent: { name: string; model?: string | null; exit: number; durationS: number; timedOut: boolean; filesChanged: string[]; tampered: string[]; summary: string } | null;
 }
 
 export interface LoopRecord {

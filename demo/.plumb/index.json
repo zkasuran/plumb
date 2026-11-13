@@ -1,0 +1,108 @@
+{
+  "v": 1,
+  "runs": [
+    {
+      "id": "20261113T022348Z-467b",
+      "startedAt": "2026-11-13T02:23:48.905Z",
+      "endedAt": "2026-11-13T02:28:40.834Z",
+      "durationS": 291.9,
+      "mode": "loop",
+      "iteration": 2,
+      "site": "http://127.0.0.1:4173/",
+      "totals": {
+        "rules": 12,
+        "pass": 12,
+        "fail": 0,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 0,
+        "advisoryFail": 0,
+        "replay": 11,
+        "author": 0,
+        "healed": 1
+      },
+      "gate": {
+        "passed": true,
+        "blocking": []
+      },
+      "credits": {
+        "before": 617.9257,
+        "after": 575.3233,
+        "used": 42.6,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T021054Z-de17",
+      "startedAt": "2026-11-13T02:10:54.000Z",
+      "endedAt": "2026-11-13T02:21:21.193Z",
+      "durationS": 627.2,
+      "mode": "loop",
+      "iteration": 1,
+      "site": "http://127.0.0.1:4173/",
+      "totals": {
+        "rules": 12,
+        "pass": 11,
+        "fail": 1,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 1,
+        "advisoryFail": 0,
+        "replay": 9,
+        "author": 2,
+        "healed": 1
+      },
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-NAV"
+        ]
+      },
+      "credits": {
+        "before": 813.3571,
+        "after": 617.9257,
+        "used": 195.4,
+        "floor": 60
+      }
+    },
+    {
+      "id": "20261113T015022Z-b4d5",
+      "startedAt": "2026-11-13T01:50:22.659Z",
+      "endedAt": "2026-11-13T01:59:54.807Z",
+      "durationS": 572.1,
+      "mode": "loop",
+      "iteration": 0,
+      "site": "http://127.0.0.1:4173/",
+      "totals": {
+        "rules": 12,
+        "pass": 6,
+        "fail": 6,
+        "broken": 0,
+        "skipped": 0,
+        "cached": 0,
+        "blockingFail": 4,
+        "advisoryFail": 2,
+        "replay": 0,
+        "author": 11,
+        "healed": 0
+      },
+      "gate": {
+        "passed": false,
+        "blocking": [
+          "PL-CONSISTENT",
+          "PL-CONSOLE",
+          "PL-NAV",
+          "PL-THEME"
+        ]
+      },
+      "credits": {
+        "before": 1200,
+        "after": 813.3571,
+        "used": 386.6,
+        "floor": 60
+      }
+    }
+  ]
+}

@@ -333,7 +333,7 @@ export function LoopDetail() {
                 <div className="t-item agent">
                   <span className="t-dot">AI</span>
                   <div className="t-body">
-                    <strong>{loop.agent} attempt {n}</strong>
+                    <strong>{loop.agent}{it.agent.model ? ` (${it.agent.model})` : ''} attempt {n}</strong>
                     <span className="muted small">{secs(it.agent.durationS)} · changed {it.agent.filesChanged.length} file{it.agent.filesChanged.length === 1 ? '' : 's'}{it.agent.tampered.length ? ` · tried to edit ${it.agent.tampered.join(', ')} (restored)` : ''}</span>
                     {it.agent.filesChanged.length > 0 && <span className="mono small">{it.agent.filesChanged.join(', ')}</span>}
                   </div>

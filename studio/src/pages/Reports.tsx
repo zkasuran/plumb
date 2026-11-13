@@ -104,6 +104,7 @@ function Limits() {
         <li><strong>It checks presence, not taste.</strong> Plumb can tell a theme switch works. It cannot tell you the dark theme is beautiful.</li>
         <li><strong>Runs leave your machine.</strong> By default Kane saves each run, with its screenshots, to your TestMu AI account. Do not point Plumb at pages that show data you cannot share.</li>
         <li><strong>The first run needs credits.</strong> Writing a full rule pack costs several hundred. Replays cost a few each.</li>
+        <li><strong>Kane can fail to start a rule.</strong> In the first recorded check, one of three rules that started together was not judged because Kane was still choosing a project. The Studio marks it Not judged, and Plumb now runs such a rule again on its own.</li>
         <li><strong>Small samples.</strong> Costs on the Measured costs page are single runs.</li>
       </ul>
     </>
