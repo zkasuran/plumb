@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { planRules, fitToBudget, estimateCredits } from '../src/check.mjs';
+import { planRules, fitToBudget, estimateCredits, isInfraFailure } from '../src/check.mjs';
 import { DEFAULTS } from '../src/config.mjs';
 
 const r = (id, severity = 'blocking', sha = 'a') => ({ id, severity, sha });
@@ -39,4 +39,10 @@ test('the budget keeps blocking rules first and stops above the floor', () => {
 
 test('defaults protect the things that judge the site', () => {
   for (const p of ['rules/**', 'tests/**', 'policy/**', 'plumb.config.json']) assert.ok(DEFAULTS.protect.includes(p));
+});
+
+test('a Kane startup race is recognised as infrastructure, a real finding is not', () => {
+  assert.equal(isInfraFailure('project/folder gate failed: error: profile "default" (prod) has no project/folder configured AND no TMS credentials'), true);
+  assert.equal(isInfraFailure('No theme-switching control is visible'), false);
+  assert.equal(isInfraFailure(null), false);
 });

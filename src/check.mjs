@@ -12,9 +12,12 @@ import { renderBrief } from './brief.mjs';
 import { readState, writeState, saveRun, runDir, pruneRuns } from './store.mjs';
 
 const BUNDLED_POLICY = fileURLToPath(new URL('../policy/plumb-gate.yaml', import.meta.url));
+const INFRA_RE = /project\/folder gate failed|no TMS credentials/i;
 const MEMBER_END = /^testrun_(authored_)?member_end$/;
 
 /** Decide which rules can reuse their last result. Pure, so the credit saving is testable. */
+export const isInfraFailure = (message) => INFRA_RE.test(message ?? '');
+
 export function planRules({ rules, state, fingerprint, fresh = false, forceIds = [] }) {
   const reuse = [];
   const run = [];
@@ -126,15 +129,15 @@ export async function runCheck({ root, cfg, flags = {}, onProgress = () => {} })
   if (!flags.dryRun) {
     const parallel = flags.parallel ?? cfg.kane.parallel;
     let remaining = [...fit];
-    for (const batch of chunk(fit, parallel)) {
+    const execBatch = async (batch, par) => {
       const balanceNow = executions.length ? await getBalance() : before;
       if (balanceNow != null && balanceNow - cfg.credits.floor < batch.length * 3) {
         for (const rule of remaining) results.set(rule.id, { ...emptyResult(rule), status: 'skipped', source: 'skipped', note: `Skipped: ${balanceNow} credits left, floor ${cfg.credits.floor}.` });
-        break;
+        return false;
       }
       for (const r of batch) onProgress({ type: 'rule_start', id: r.id, title: r.title });
       const files = batch.map((r) => join(cfg.tests.dir, testFileName(r.id)));
-      const args = testrunArgs({ files, url, headless: cfg.kane.headless, parallel: Math.min(parallel, batch.length), heal: flags.heal ?? cfg.kane.heal, policy: policyFile, name: `plumb ${id}`, author: !!flags.author });
+      const args = testrunArgs({ files, url, headless: cfg.kane.headless, parallel: Math.min(par, batch.length), heal: flags.heal ?? cfg.kane.heal, policy: policyFile, name: `plumb ${id}`, author: !!flags.author });
       const run = await runKane(args, {
         cwd: root,
         timeoutMs: (flags.timeoutS ?? 1500) * 1000,
@@ -161,6 +164,19 @@ export async function runCheck({ root, cfg, flags = {}, onProgress = () => {} })
       if (run.code === 2 && !run.events.some((e) => MEMBER_END.test(e.type))) {
         const err = run.events.find((e) => e.type === 'error');
         for (const rule of batch) results.set(rule.id, { ...emptyResult(rule), status: 'broken', failure: { step: null, message: err?.message ?? `kane-cli exited 2: ${run.stderr.split('\n').find((l) => l.trim()) ?? 'did not start'}`, happened: null, suggestedFix: null, severity: null, confidence: null, confirmedBug: null, pageUrl: null, screenshot: null } });
+      }
+      return true;
+    };
+    for (const batch of chunk(fit, parallel)) if (!(await execBatch(batch, parallel))) break;
+    // Several members starting at once can race while Kane picks a project. That is not a verdict on
+    // the page, so run those rules again one at a time and call them broken if it persists.
+    for (const rule of fit) {
+      const first = results.get(rule.id);
+      if (first && first.status !== 'pass' && INFRA_RE.test(first.failure?.message ?? '')) {
+        onProgress({ type: 'rule_retry', id: rule.id });
+        await execBatch([rule], 1);
+        const again = results.get(rule.id);
+        if (again && again.status === 'fail' && INFRA_RE.test(again.failure?.message ?? '')) results.set(rule.id, { ...again, status: 'broken' });
       }
     }
   }

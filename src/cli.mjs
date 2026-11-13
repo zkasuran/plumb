@@ -95,6 +95,9 @@ function progressPrinter({ quiet = false } = {}) {
       case 'agent_start':
         err(`${c.cyan('agent')} ${e.agent} is fixing (attempt ${e.iteration})`);
         break;
+      case 'rule_retry':
+        err(c.yellow(`  ↻ ${e.id} hit a Kane startup race, running it again on its own`));
+        break;
       case 'agent_limit':
         err(c.yellow(`${e.agent}${e.model ? ` (${e.model})` : ''} reports a usage limit, trying the next model`));
         break;
