@@ -16,3 +16,5 @@ studio/public/data/
 **/tests/plumb/output-*/
 dogfood/.plumb/
 dogfood/tests/
+/submit/
+/CONTENT-plumb.html
