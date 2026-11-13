@@ -4,6 +4,14 @@ import { readFileSync, existsSync } from 'node:fs';
 const KANE = process.env.PLUMB_KANE_BIN || 'kane-cli';
 const AGENT_TAG = process.env.KANE_CLI_USER_AGENT || 'plumb';
 
+/**
+ * Credentials for CI and shared machines: LT_USERNAME and LT_ACCESS_KEY, the pair Kane documents.
+ * They are passed on each command and never written to disk by Plumb.
+ */
+export function authArgs(env = process.env) {
+  return env.LT_USERNAME && env.LT_ACCESS_KEY ? ['--username', env.LT_USERNAME, '--access-key', env.LT_ACCESS_KEY] : [];
+}
+
 const ANSI_RE = /\x1b\[[0-9;]*[A-Za-z]/g;
 export const stripAnsi = (s) => String(s ?? '').replace(ANSI_RE, '');
 
@@ -34,7 +42,7 @@ export function readNdjsonFile(path) {
  */
 export function runKane(args, { cwd, env = {}, onEvent, onStderr, timeoutMs = 0, signal } = {}) {
   return new Promise((resolve, reject) => {
-    const child = spawn(KANE, args, {
+    const child = spawn(KANE, [...args, ...authArgs()], {
       cwd,
       env: { ...process.env, KANE_CLI_USER_AGENT: AGENT_TAG, NO_COLOR: '1', ...env },
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -122,6 +130,18 @@ export function parseWhoami(text) {
 }
 
 export async function kaneStatus() {
+  if (authArgs().length) {
+    const status = { installed: false, version: null, authenticated: false, user: process.env.LT_USERNAME, credits: null };
+    try {
+      status.version = parseVersion((await kaneText(['--version'])).out);
+      status.installed = !!status.version;
+      status.credits = parseBalance((await kaneText(['balance', ...authArgs()])).out);
+      status.authenticated = status.credits != null;
+    } catch {
+      /* leave defaults */
+    }
+    return status;
+  }
   const status = { installed: false, version: null, authenticated: false, user: null, credits: null };
   try {
     const v = await kaneText(['--version']);
@@ -149,7 +169,7 @@ export async function kaneStatus() {
 
 export async function getBalance() {
   try {
-    return parseBalance((await kaneText(['balance'])).out);
+    return parseBalance((await kaneText(['balance', ...authArgs()])).out);
   } catch {
     return null;
   }
