@@ -74,7 +74,7 @@ export function renderBrief(report, { protect = [], siteDir = null, ignore = [],
     lines.push(`## ${r.id}: ${r.title}  (${r.severity})`, '', `**Rule.** ${r.statement.replace(/\s+/g, ' ')}`, '');
     const f = r.failure;
     if (f) {
-      const where = f.step ? `Failed at step ${f.step} of ${r.steps.length}${f.stepText ? `: "${f.stepText.replace(/[.\s]+$/, '')}"` : ''}.` : 'The run did not finish.';
+      const where = f.step ? `Failed at step ${f.step} of ${r.steps.length}${f.stepText ? `: "${f.stepText.replace(/[.\s]+$/, '')}"` : ''}.` : (f.message ? `${f.message.replace(/[.\s]+$/, '')}.` : 'The run did not finish.');
       lines.push(`**What failed.** ${where}`);
       if (f.happened) lines.push(`**What the browser saw.** ${f.happened}`);
       else lines.push(`**Kane said.** ${f.message}`);
