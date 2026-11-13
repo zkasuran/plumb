@@ -95,6 +95,12 @@ function progressPrinter({ quiet = false } = {}) {
       case 'agent_start':
         err(`${c.cyan('agent')} ${e.agent} is fixing (attempt ${e.iteration})`);
         break;
+      case 'agent_limit':
+        err(c.yellow(`${e.agent}${e.model ? ` (${e.model})` : ''} reports a usage limit, trying the next model`));
+        break;
+      case 'agent_wait':
+        err(c.yellow(`all models are at their limit, waiting ${Math.round(e.seconds / 60)} min`));
+        break;
       case 'agent_end':
         err(`${c.cyan('agent')} done in ${e.durationS}s, changed ${plural(e.filesChanged.length, 'file')}${e.tampered.length ? c.red(`, tried to change protected files (${e.tampered.join(', ')}), restored`) : ''}`);
         break;

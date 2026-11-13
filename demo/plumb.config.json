@@ -1,0 +1,6 @@
+{
+  "site": { "url": "http://127.0.0.1:4173/", "dir": "lantern" },
+  "kane": { "parallel": 3 },
+  "credits": { "floor": 60 },
+  "agent": { "name": "opencode", "maxIterations": 3 }
+}

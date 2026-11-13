@@ -73,3 +73,25 @@ export function runAgent(name, { prompt, cwd, cmd = null, model = null, timeoutS
     });
   });
 }
+
+const LIMIT_RE = /budget exhausted|rate.?limit|quota|too many requests|\b429\b|overloaded|try again (in|later)|next batch/i;
+
+/** Did the agent stop because of a usage limit rather than because it could not do the task? */
+export function isLimitError(result) {
+  return result.exit !== 0 && LIMIT_RE.test(result.output ?? '');
+}
+
+/** Short, provider-free label for a model id such as "vendor/model-name". */
+export function modelLabel(model) {
+  return model ? String(model).split('/').pop() : null;
+}
+
+export function cleanOutput(text) {
+  return String(text ?? '')
+    .replace(/\x1b\[[0-9;]*[A-Za-z]/g, '')
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l && !/^[⚙%#>]|gateway|^\[?[✓•]\]?\s/.test(l))
+    .slice(-8)
+    .join('\n');
+}

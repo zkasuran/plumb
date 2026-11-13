@@ -64,3 +64,45 @@ test('agent commands take an optional model and keep the prompt as one argument'
   assert.deepEqual(agentCommand('opencode', { prompt: 'p', cwd: '/x', model: null }).args, ['run', 'p']);
   assert.throws(() => agentCommand('cmd', { prompt: 'p', cwd: '/x' }), /agent.cmd/);
 });
+
+import { agentModels, runAgentWithFallback } from '../src/loop.mjs';
+import { isLimitError, modelLabel, cleanOutput } from '../src/agents.mjs';
+
+test('usage limits are recognised, other failures are not', () => {
+  assert.equal(isLimitError({ exit: 1, output: 'Error: pool budget exhausted — next batch in 36m' }), true);
+  assert.equal(isLimitError({ exit: 1, output: '429 Too Many Requests' }), true);
+  assert.equal(isLimitError({ exit: 1, output: 'syntax error in prompt' }), false);
+  assert.equal(isLimitError({ exit: 0, output: 'quota used up' }), false);
+});
+
+test('model labels hide the provider and the env list wins over config', () => {
+  assert.equal(modelLabel('vendor/model-1'), 'model-1');
+  assert.equal(modelLabel(null), null);
+  const cfg = { agent: { model: 'c', models: ['a', 'b'] } };
+  assert.deepEqual(agentModels(cfg, { PLUMB_AGENT_MODELS: 'x, y' }), ['x', 'y']);
+  assert.deepEqual(agentModels(cfg, {}), ['a', 'b']);
+  assert.deepEqual(agentModels({ agent: { model: null, models: [] } }, {}), [null]);
+});
+
+test('the agent rotates models on a limit, waits when all are limited, and gives up after the retries', async () => {
+  const seen = [];
+  const events = [];
+  const ok = await runAgentWithFallback({ agentName: 'a', models: ['m1', 'm2'], onProgress: (e) => events.push(e.type), sleepFn: async () => {}, run: async (m) => (seen.push(m), m === 'm2' ? { exit: 0, output: 'done' } : { exit: 1, output: 'budget exhausted' }) });
+  assert.equal(ok.model, 'm2');
+  assert.deepEqual(seen, ['m1', 'm2']);
+  assert.deepEqual(events, ['agent_limit']);
+
+  let calls = 0;
+  const waits = [];
+  const later = await runAgentWithFallback({ agentName: 'a', models: ['m1'], onProgress: () => {}, sleepFn: async (ms) => waits.push(ms), waitS: 5, run: async () => (++calls < 3 ? { exit: 1, output: 'rate limit' } : { exit: 0, output: 'ok' }) });
+  assert.equal(later.exit, 0);
+  assert.deepEqual(waits, [5000, 5000]);
+
+  const never = await runAgentWithFallback({ agentName: 'a', models: ['m1'], onProgress: () => {}, sleepFn: async () => {}, retries: 2, run: async () => ({ exit: 1, output: 'quota' }) });
+  assert.equal(never.limited, true);
+});
+
+test('agent output is cleaned of colour codes and tool-call noise', () => {
+  const text = '\u001b[0m⚙ some_gateway_tool {"id":1}\n\u001b[0m% Patch 2 files\nI changed the header and the theme switch.\n';
+  assert.equal(cleanOutput(text), 'I changed the header and the theme switch.');
+});

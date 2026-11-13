@@ -11,7 +11,7 @@ export const DEFAULTS = Object.freeze({
   kane: { parallel: 2, headless: true, heal: true, policy: 'policy/plumb-gate.yaml', maxSteps: 25 },
   credits: { floor: 60, perRuleEstimate: 50 },
   protect: ['rules/**', 'tests/**', 'policy/**', 'plumb.config.json'],
-  agent: { name: 'claude', maxIterations: 4, timeoutS: 900, cmd: null },
+  agent: { name: 'claude', maxIterations: 4, timeoutS: 900, cmd: null, model: null, models: [], limitWaitS: 300, limitRetries: 8 },
 });
 
 function merge(base, extra) {

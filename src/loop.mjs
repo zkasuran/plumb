@@ -2,7 +2,7 @@ import { join, resolve } from 'node:path';
 import { newRunId, nowIso, round, PlumbError, writeJson, readJson } from './util.mjs';
 import { runCheck } from './check.mjs';
 import { snapshotProtected, diffSnapshots, restoreProtected, snapshotSite, changedFiles } from './guard.mjs';
-import { buildPrompt, runAgent } from './agents.mjs';
+import { buildPrompt, runAgent, isLimitError, modelLabel, cleanOutput } from './agents.mjs';
 import { plumbDir } from './store.mjs';
 
 /** What moved between two reports, by rule id. */
@@ -19,6 +19,36 @@ export function diffReports(prev, next) {
     else out.stillPassing.push(r.id);
   }
   return out;
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** Models to try, in order. PLUMB_AGENT_MODELS (comma list) wins over the config, so no provider name has to live in a project file. */
+export function agentModels(cfg, env = process.env) {
+  const raw = env.PLUMB_AGENT_MODELS || (cfg.agent.models ?? []).join(',') || env.PLUMB_AGENT_MODEL || cfg.agent.model || '';
+  const list = String(raw).split(',').map((x) => x.trim()).filter(Boolean);
+  return list.length ? list : [null];
+}
+
+/**
+ * Run the agent, rotating through the models when one reports a usage limit, and waiting
+ * for the limit to reset when all of them do. Gives up after `limitRetries` waits.
+ */
+export async function runAgentWithFallback({ agentName, models, run, onProgress, waitS = 300, retries = 8, sleepFn = sleep }) {
+  let rounds = 0;
+  let start = 0;
+  for (;;) {
+    for (let k = 0; k < models.length; k++) {
+      const model = models[(start + k) % models.length];
+      const result = await run(model);
+      if (!isLimitError(result)) return { ...result, model };
+      onProgress({ type: 'agent_limit', agent: agentName, model: modelLabel(model) });
+    }
+    if (++rounds > retries) return { exit: 1, durationS: 0, output: 'Every model reported a usage limit.', timedOut: false, missing: false, model: models[0], limited: true };
+    onProgress({ type: 'agent_wait', seconds: waitS });
+    await sleepFn(waitS * 1000);
+    start = 0;
+  }
 }
 
 const failingIds = (report) => report.rules.filter((r) => r.status === 'fail' || r.status === 'broken').map((r) => r.id);
@@ -60,7 +90,14 @@ export async function runLoop({ root, cfg, flags = {}, onProgress = () => {} }) 
     const briefPath = '.plumb/brief.md';
     const prompt = buildPrompt({ report, briefPath, siteDir: cfg.site.dir, protect: cfg.protect, previous: previousAttempt ? { tampered: previousAttempt.tampered, stillFailing: failingIds(report) } : null });
     onProgress({ type: 'agent_start', agent: agentName, iteration: i + 1 });
-    const result = await runAgent(agentName, { prompt, cwd: root, cmd: cfg.agent.cmd, model: cfg.agent.model ?? null, timeoutS: cfg.agent.timeoutS, env: { PLUMB_BRIEF: join(root, briefPath), PLUMB_RUN: report.id }, onOutput: (t) => onProgress({ type: 'agent_output', text: t }) });
+    const result = await runAgentWithFallback({
+      agentName,
+      models: agentModels(cfg),
+      onProgress,
+      waitS: cfg.agent.limitWaitS ?? 300,
+      retries: cfg.agent.limitRetries ?? 8,
+      run: (model) => runAgent(agentName, { prompt, cwd: root, cmd: cfg.agent.cmd, model, timeoutS: cfg.agent.timeoutS, env: { PLUMB_BRIEF: join(root, briefPath), PLUMB_RUN: report.id }, onOutput: (t) => onProgress({ type: 'agent_output', text: t }) }),
+    });
     if (result.missing) throw new PlumbError(`${agentName} is not installed on this machine.`, { code: 'AGENT_MISSING', hint: `Pick another agent with --agent (${['claude', 'codex', 'kiro', 'opencode'].join(', ')}) or set agent.cmd.` });
 
     const protectedAfter = snapshotProtected(root, cfg.protect);
@@ -68,8 +105,12 @@ export async function runLoop({ root, cfg, flags = {}, onProgress = () => {} }) 
     let tampered = [];
     if (tamper.tampered) tampered = restoreProtected(root, protectedBefore, tamper);
     const files = changedFiles(siteBefore, snapshotSite(siteDir, cfg.site.ignore));
-    previousAttempt = { tampered, agent: { name: agentName, exit: result.exit, durationS: result.durationS, timedOut: result.timedOut, filesChanged: files, tampered, summary: result.output.split('\n').filter(Boolean).slice(-8).join('\n') } };
+    previousAttempt = { tampered, agent: { name: agentName, model: modelLabel(result.model), exit: result.exit, durationS: result.durationS, timedOut: result.timedOut, filesChanged: files, tampered, summary: cleanOutput(result.output) } };
     onProgress({ type: 'agent_end', ...previousAttempt.agent });
+    if (result.limited) {
+      outcome = 'agent-unavailable';
+      break;
+    }
     if (files.length === 0 && tampered.length === 0 && i > 0 && iterations.at(-1)?.agent?.filesChanged?.length === 0) {
       outcome = 'stalled';
       break;
